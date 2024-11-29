@@ -5,7 +5,7 @@ const otpSchema = new mongoose.Schema({
     otp: { type: String, required: true }, // OTP value
     target: { type: String,enum: ['phone', 'email'], required: true }, // Phone number or email address
     createdAt: { type: Date, default: Date.now, expires: 300 }, // Automatically deletes after 5 minutes
-    verified: { type: Boolean, default: false } // Status of OTP
+    isVerified: { type: Boolean, default: false } // Status of OTP
 }, {
     collection: 'OTP',
 });
