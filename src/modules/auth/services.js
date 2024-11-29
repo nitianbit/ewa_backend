@@ -78,7 +78,8 @@ export const verifyOTPQuery = async (userId, otp, otpId) => {
   }
 
   // Mark OTP as verified (optional)
-  await OTP.findByIdAndUpdate(otpData._id, { verified: true });
+  await OTP.findByIdAndUpdate(otpData._id, { isVerified: true });
+  await User.findByIdAndUpdate(userId, { isVerified: true });
 
   await deleteOTPByUserId(userId); // Delete all OTPs for the user after verification
   return true;
