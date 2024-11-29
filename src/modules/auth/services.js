@@ -42,10 +42,10 @@ export const updateUser = async (id, updatedData) => {
 
 // OTP
 // Get an OTP by userId and method (phone/email)
-export const getOTPByUserIdAndMethod = async (userId, target) => {
+export const getOTPByUserIdAndMethod = async (userId, otpId) => {
   return await OTP.findOne({
+    otpId,
     userId,
-    target,
     expireAt: { $gt: new Date() } // Only return non-expired OTP
   }).lean();
 };
@@ -71,8 +71,8 @@ export const deleteOTPByUserId = async (userId) => {
 };
 
 // Verify an OTP for a user by method
-export const verifyOTPQuery = async (userId, otp, method) => {
-  const otpData = await getOTPByUserIdAndMethod(userId, method);
+export const verifyOTPQuery = async (userId, otp, otpId) => {
+  const otpData = await getOTPByUserIdAndMethod(userId, otpId);
   if (!otpData || otpData.otp !== otp || otpData.expireAt < new Date()) {
     return false;
   }
