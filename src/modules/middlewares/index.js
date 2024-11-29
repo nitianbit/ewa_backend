@@ -1,6 +1,6 @@
 import { USER_TYPE } from "../../db/models/User.js";
 import { sendResponse } from "../../utils/helper.js";
-import { decodeToken } from "../auth/token_services.js";
+import { decodeToken } from "../auth/middlewares.js";
 
 
 
