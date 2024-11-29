@@ -11,6 +11,11 @@ export const getUserByEmail = async (email) => {
 // Get a user by phone
 export const getUserByPhone = async (phone, countryCode) => {
   return await User.findOne({ phone, countryCode }).lean();
+}
+
+// Get a user 
+export const getUser = async (filter) => {
+  return await User.findOne(filter).lean();
 };
 
 // Get a user by ID without sensitive fields
