@@ -1,4 +1,4 @@
-import { User } from '../../db/models/User';
+import { User, USER_TYPE } from '../../db/models/User';
 import { OTP } from '../../db/models/Otp';
 
 
@@ -35,8 +35,6 @@ export const updateUser = async (id, updatedData) => {
     .select('-password -userType')
     .lean();
 };
-
-
 
 
 
