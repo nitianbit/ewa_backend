@@ -84,3 +84,16 @@ export const verifyOTPQuery = async (userId, otp, otpId) => {
   await deleteOTPByUserId(userId); // Delete all OTPs for the user after verification
   return true;
 };
+
+
+export const checkUserRole = (role) => {
+  return USER_TYPE.includes(role);
+}
+
+
+export const modifyRole = (role, isEnabaled="e")=>{
+  if(checkUserRole(role)){
+    return `${role}-${isEnabaled}`
+  }
+  return ``
+}
