@@ -8,3 +8,25 @@ export const logger = winston.createLogger({
     new winston.transports.File({ filename: 'combined.log' }),
   ],
 });
+
+export const showError = (err) => {
+  if (err?.response?.data) {
+    logger.log(
+      "error",
+      `Error for URL: ${err?.config?.url}`,
+      { data: err?.response?.data }
+    );
+  } else if (err?.code === 'ECONNREFUSED') {
+    logger.log(
+      "error",
+      `ECONNREFUSED for URL: ${err?.config?.url}`
+    );
+  } else if (err?.code === 'ECONNABORTED' || err?.message?.includes('timeout')) {
+    logger.log(
+      "error",
+      `TIMEOUT for URL: ${err?.config?.url}`
+    );
+  } else {
+    logger.log("error", "An unknown error occurred", { error: err });
+  }
+};
