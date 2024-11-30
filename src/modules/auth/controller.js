@@ -22,11 +22,10 @@ export const login = async (req, res) => {
             return sendResponse(res, 400, "User not found.");
         }
 
-        await sendOTP(req.body)
-
-        return sendResponse(res, 200, "Success", {
-            token: token
-        })
+        if (user.isVerified === false) {
+            return sendResponse(res, 400, "User not verified.");
+        }
+        return sendResponse(res, 200, "OTP verification is Pending", user)
 
     } catch (error) {
         console.log(error);
@@ -40,15 +39,9 @@ export const signup = async (req, res) => {
         const { name, email, phone, countryCode = 91, userType } = req.body; // handle phone
         if (!name || (!email && (!phone && !countryCode)) || !checkUserRole(userType)) return sendResponse(res, 400, "Invalid Request. Please send all the details.");
 
-
-        if (!USER_TYPE.includes(userType)) {
-            return sendResponse(res, 400, "Please enter valid user role.");
-        }
-
         let user = await getUser({
             ...(email && { email }),
             ...(phone && { phone, countryCode }),
-            isVerified: false
         })
 
         if (user) {
@@ -63,9 +56,9 @@ export const signup = async (req, res) => {
             phone: req.body.phone,
         }
         const newUser = await createUser(userData)
-        await sendOTP(newUser)
+        // await sendOTP(newUser, res)
 
-        return sendResponse(res, 200, "Success. User Registed", {})
+        return sendResponse(res, 200, "OTP verification is Pending", newUser)
     } catch (error) {
         console.log(error);
         logger.error(error)
@@ -74,13 +67,13 @@ export const signup = async (req, res) => {
 }
 
 
-export const sendOTP = async (user = {}) => {
+export const sendOTP = async (req, res) => {
     try {
-        const { email, phone, countryCode } = user
+        const { email, phone, countryCode, _id } = req.body
         if (!email || (!phone && !countryCode)) return sendResponse(res, 400, "Invalid Request. Please send all the details.");
 
 
-        let otp = await createOrUpdateOTP(user?._id, email == "email" ? "email" : "phone");
+        let otp = await createOrUpdateOTP(_id, email ? "email" : "phone");
         if (!otp) {
             return sendResponse(res, 400, "OTP is not generated");
         }
@@ -90,7 +83,7 @@ export const sendOTP = async (user = {}) => {
         //     return sendResponse(res, 400, "Something went wrong.");
         // }
         console.log(otp);
-        return sendResponse(res, 200, "Success", { message: "OTP sent successfully" }, { userData: !user ? data : null, otpId: otp?._id });
+        return sendResponse(res, 200, "OTP sent successfully",  { userId: _id, otpId: otp?._id, otp:otp?.otp });
     } catch (error) {
         logger.error(error)
         return sendResponse(res, 500, "Internal Server Error", error);
@@ -100,18 +93,18 @@ export const sendOTP = async (user = {}) => {
 
 export const verifyOTP = async (req, res) => {
     try {
-        const { otp, otpId } = req.body;
-        const user = await User.findById(req.user._id).select("-password -userType").lean();
+        const { otp, otpId, userId } = req.body;
+        // const user = await User.findById(req.user._id).select("-password -userType").lean();
 
-        const otpData = await verifyOTPQuery(user?._id, otp, otpId);
-
-        const token = createToken(user)
+        const otpData = await verifyOTPQuery(otp, otpId, userId);
 
         if (!otpData) {
             return sendResponse(res, 400, "Invalid OTP");
         }
+        const user = await getUser({_id:userId})
+        let token = createToken(user)
 
-        return sendResponse(res, 200, "Account Verified", user?.isVerified ? token : null);
+        return sendResponse(res, 200, "Account Verified", token);
     } catch (error) {
         logger.error(error)
         return sendResponse(res, 500, "Internal Server Error", error);
