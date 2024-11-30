@@ -40,14 +40,11 @@ export const updateUser = async (id, updatedData) => {
 
 // OTP
 // Get an OTP by userId and method (phone/email)
-export const getOTPByUserIdAndMethod = async (userId, otpId) => {
+export const getOTPByUserIdAndMethod = async (otpId) => {
   return await OTP.findOne({
-    otpId,
-    userId,
-    expireAt: { $gt: new Date() } // Only return non-expired OTP
+    _id: otpId
   }).lean();
 };
-
 
 // Create or update an OTP for a user
 export const createOrUpdateOTP = async (userId, target) => {
@@ -57,7 +54,7 @@ export const createOrUpdateOTP = async (userId, target) => {
     {
       otp,
       target,
-      expireAt: new Date(Date.now() + 5 * 60 * 1000) // Expires in 5 minutes
+      expireAt: new Date(Date.now() + 5 * 60 * 1000 * 12) // Expires in 60 minutes
     },
     { upsert: true, setDefaultsOnInsert: true, new: true }
   ).lean();
@@ -69,9 +66,9 @@ export const deleteOTPByUserId = async (userId) => {
 };
 
 // Verify an OTP for a user by method
-export const verifyOTPQuery = async (userId, otp, otpId) => {
-  const otpData = await getOTPByUserIdAndMethod(userId, otpId);
-  if (!otpData || otpData.otp !== otp || otpData.expireAt < new Date()) {
+export const verifyOTPQuery = async (otp, otpId, userId) => {
+  const otpData = await getOTPByUserIdAndMethod(otpId);
+  if (!otpData || otpData.otp != otp || otpData.expireAt < new Date()) {
     return false;
   }
 
@@ -79,18 +76,18 @@ export const verifyOTPQuery = async (userId, otp, otpId) => {
   await OTP.findByIdAndUpdate(otpData._id, { isVerified: true });
   await User.findByIdAndUpdate(userId, { isVerified: true });
 
-  await deleteOTPByUserId(userId); // Delete all OTPs for the user after verification
+  await deleteOTPByUserId(otpData?._id); // Delete all OTPs for the user after verification
   return true;
 };
 
 
 export const checkUserRole = (role) => {
-  return USER_TYPE.includes(role);
+  return Object.values(USER_TYPE).includes(role);
 }
 
 
-export const modifyRole = (role, isEnabaled="e")=>{
-  if(checkUserRole(role)){
+export const modifyRole = (role, isEnabaled = "e") => {
+  if (checkUserRole(role)) {
     return `${role}-${isEnabaled}`
   }
   return ``
