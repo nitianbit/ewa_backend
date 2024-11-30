@@ -24,7 +24,29 @@ function toBoolean(value) {
     return value === 'true' || value === '1';
 }
 
- 
+function formatFilterValue(value) {
+    if (value.startsWith("in[") && value.endsWith("]")) {
+        return { $in: value.substring(3, value.length - 1).split(",") };
+    } else if (value.startsWith("caseIgnore[") && value.endsWith("]")) {
+        return { $regex: new RegExp(value.substring(11, value.length - 1), 'i') };
+    } else if (value.startsWith("notin[") && value.endsWith("]")) {
+        return { $nin: value.substring(6, value.length - 1).split(",") };
+    } else if (value.startsWith("btw[") && value.endsWith("]")) {
+        let [from, to] = value.substring(4, value.length - 1).split(",");
+        return { $gte: from, $lte: to };
+    } else if (value.startsWith("lt[") && value.endsWith("]")) {
+        return { $lt: value.substring(3, value.length - 1) };
+    } else if (value.startsWith("gt[") && value.endsWith("]")) {
+        return { $gt: value.substring(3, value.length - 1) };
+    } else if (value.startsWith("exists[") && value.endsWith("]")) {
+        return { $exists: value.substring(7, value.length - 1) };
+    } else if (value.startsWith("objectId[") && value.endsWith("]")) {
+        return mongoose.Types.ObjectId(value.substring(9, value.length - 1));
+    }
+    return value;
+}
+
+
 
 export const extractGridRequest = (request) => {
     let gridRequest = {};
@@ -54,28 +76,28 @@ export const extractGridRequest = (request) => {
 
 
     gridRequest.filters = {};
-    let keyword=null;
+    let keyword = null;
     for (let key in querymap) {
         if (querymap.hasOwnProperty(key) && key) {
             let value = querymap[key];
             if (key === 'keyword') {
                 keyword = value;
-            }
-            else if (value.startsWith("in[") && value.endsWith("]")) {
-                gridRequest.filters[key] = { $in: value.substring(3, value.length - 1).split(",") };
-            } else if (value.startsWith("caseIgnore[") && value.endsWith("]")) {
-                gridRequest.filters[key] = { $regex: new RegExp(value.substring(11, value.length - 1), 'i') };
-            } else if (value.startsWith("notin[") && value.endsWith("]")) {
-                gridRequest.filters[key] = { $nin: value.substring(6, value.length - 1).split(",") };
-            } else if (value.startsWith("btw[") && value.endsWith("]")) {
-                let [from, to] = value.substring(4, value.length - 1).split(",");
-                gridRequest.filters[key] = { $gte: from, $lte: to };
-            } else if (value.startsWith("lt[") && value.endsWith("]")) {
-                gridRequest.filters[key] = { $lt: value.substring(3, value.length - 1) };
-            } else if (value.startsWith("gt[") && value.endsWith("]")) {
-                gridRequest.filters[key] = { $gt: value.substring(3, value.length - 1) };
+            } else if (value.startsWith("or[") && value.endsWith("]")) {
+                //or = or[id=123,name=John]
+                const conditions = value.substring(3, value.length - 1).split(",").map(condition => {
+                    let [orKey, orValue] = condition.split('=');
+                    return { [orKey]: formatFilterValue(orValue) };
+                });
+                gridRequest.filters.$or = conditions;
+            } else if (value.startsWith("and[") && value.endsWith("]")) {
+                //and = and[id=123,name=John]
+                const conditions = value.substring(3, value.length - 1).split(",").map(condition => {
+                    let [orKey, orValue] = condition.split('=');
+                    return { [orKey]: formatFilterValue(orValue) };
+                });
+                gridRequest.filters.$and = conditions;
             } else {
-                gridRequest.filters[key] = value;
+                gridRequest.filters[key] = formatFilterValue(value);
             }
         }
     }
