@@ -1,0 +1,22 @@
+import mongoose from "mongoose";
+import moment from "moment";
+
+const DepartmentSchema = new mongoose.Schema(
+    {
+      name: { type: String, required: true }, // e.g., Cardiology, Neurology
+      description: { type: String },
+      hospital: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hospital',
+        required: true,
+      },
+      createdAt: {
+        type: Number,
+        default: moment().unix(),
+      },
+    updatedAt: { type: Number,  },
+    }
+  );
+  
+  export default Department = mongoose.model('Department', DepartmentSchema);
+  
