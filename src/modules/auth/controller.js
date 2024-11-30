@@ -1,5 +1,5 @@
 import { USER_TYPE, User } from "../../db/models/User.js";
-import { sendEmail } from "../../services/OTP/email.js";
+// import { sendEmail } from "../../services/OTP/email.js";
 import { sendResponse } from "../../utils/helper.js"
 import { checkUserRole, createOrUpdateOTP, createUser, getUser, getUserByEmail, getUserByPhone, modifyRole, verifyOTPQuery } from "./services.js";
 import { createToken } from "./middlewares.js";
@@ -84,11 +84,11 @@ export const sendOTP = async (user = {}) => {
         if (!otp) {
             return sendResponse(res, 400, "OTP is not generated");
         }
-        const isOTPSend = email ? await sendEmail(email, otp) : await sendSMS(countryCode, phone, otp);
+        // const isOTPSend = email ? await sendEmail(email, otp) : await sendSMS(countryCode, phone, otp);
 
-        if (!isOTPSend) {
-            return sendResponse(res, 400, "Something went wrong.");
-        }
+        // if (!isOTPSend) {
+        //     return sendResponse(res, 400, "Something went wrong.");
+        // }
         console.log(otp);
         return sendResponse(res, 200, "Success", { message: "OTP sent successfully" }, { userData: !user ? data : null, otpId: otp?._id });
     } catch (error) {
