@@ -102,6 +102,9 @@ export const verifyOTP = async (req, res) => {
             return sendResponse(res, 400, "Invalid OTP");
         }
         const user = await getUser({_id:userId})
+        if(!user){
+            return sendResponse(res, 400, "User not found");
+        }
         let token = createToken(user)
 
         return sendResponse(res, 200, "Account Verified", token);
