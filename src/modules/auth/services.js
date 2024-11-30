@@ -1,5 +1,5 @@
-import { User, USER_TYPE } from '../../db/models/User';
-import { OTP } from '../../db/models/Otp';
+import { User, USER_TYPE } from '../../db/models/User.js';
+import { OTP } from '../../db/models/Otp.js';
 
 
 // User
