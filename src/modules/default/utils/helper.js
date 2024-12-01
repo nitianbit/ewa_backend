@@ -5,6 +5,7 @@ import Department from "../../../db/models/Departments.js";
 import Doctor from '../../../db/models/Doctors.js'
 import Hospital from "../../../db/models/Hospitals.js";
 import Laboratory from "../../../db/models/Laboratories.js";
+import Offer from "../../../db/models/Offer.js";
 import Review from "../../../db/models/Reviews.js";
 
 export const moduleMiddlewares = {
@@ -33,6 +34,8 @@ export const getModule = (module) => {
             return Appointment
         case 'reviews':
             return Review
+        case "offer":
+            return Offer
         default:
             break;
     }
