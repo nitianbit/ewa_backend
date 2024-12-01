@@ -20,5 +20,6 @@ const LaboratorySchema = new mongoose.Schema(
     }
   );
   
-  export default Laboratory = mongoose.model('Laboratory', LaboratorySchema);
+const Laboratory = mongoose.model('Laboratory', LaboratorySchema);
+export default Laboratory
   

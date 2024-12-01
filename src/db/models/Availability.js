@@ -21,5 +21,6 @@ const AvailabilitySchema = new mongoose.Schema(
     }
   );
   
-  export default Availability = mongoose.model('Availability', AvailabilitySchema);
+  const  Availability = mongoose.model('Availability', AvailabilitySchema);
+  export default Availability
   
