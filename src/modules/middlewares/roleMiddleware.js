@@ -26,7 +26,7 @@ const middleware = async (req, res, next, requiredRole, module) => {
     }
 };
 
-const doctorsMiddleware = (req, res, next) => middleware(req, res, next, 1, "doctors");
-const laboratoriesMiddleware = (req, res, next) => middleware(req, res, next, 1, "laboratories");
+const doctorsMiddleware = (req, res, next) => middleware(req, res, next, "1013-e", "doctors");
+const laboratoriesMiddleware = (req, res, next) => middleware(req, res, next, "1013-e", "laboratories");
 
 module.exports = { middleware, doctorsMiddleware, laboratoriesMiddleware };
