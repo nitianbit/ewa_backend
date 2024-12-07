@@ -1,3 +1,4 @@
+import adminRouter from "../modules/admin/routes.js";
 import authRouter from "../modules/auth/routes.js";
 import dashboardRouter from "../modules/dashboard/routes.js";
 import defaultRouter from "../modules/default/routes/index.js";
@@ -18,6 +19,12 @@ export const routes=[
     {
         path: '/api/dashboard',
         router: dashboardRouter,
+        middlewares: []
+    },
+
+    {
+        path: '/api/admin',
+        router: adminRouter,
         middlewares: []
     },
    
