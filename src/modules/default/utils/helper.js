@@ -7,15 +7,16 @@ import Hospital from "../../../db/models/Hospitals.js";
 import Laboratory from "../../../db/models/Laboratories.js";
 import Offer from "../../../db/models/Offer.js";
 import Review from "../../../db/models/Reviews.js";
+import mongoose from "mongoose";
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
     'supervisor': [verifyToken],//accessed by admin or supervisor
-    'doctors':[verifyToken]
+    'doctors': [verifyToken]
 }
 
 export const getModule = (module) => {
-    switch (module) { 
+    switch (module) {
         case 'admin':
             return moduleMiddlewares.admin;
         case 'supervisor':
@@ -40,3 +41,10 @@ export const getModule = (module) => {
             break;
     }
 }
+
+export const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+export const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
