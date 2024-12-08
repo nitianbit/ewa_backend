@@ -1,4 +1,4 @@
-import { USER_TYPE } from "../../db/models/User.js";
+import { USER_TYPE } from "../../db/models/Admins.js";
 import { sendResponse } from "../../utils/helper.js";
 import { decodeToken } from "../auth/middlewares.js";
 
