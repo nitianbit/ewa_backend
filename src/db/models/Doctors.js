@@ -6,7 +6,8 @@ const DoctorSchema = new mongoose.Schema(
       name: { type: String, required: true },
       specialization: { type: String, required: true },
       email: { type: String, unique: true, required: true },
-      contactNumber: { type: String, required: true },
+      phone: Number,
+      countryCode: { type: Number, default: 91 },
       isIndividual: { type: Boolean, default: false },
       hospital: {
         type: mongoose.Schema.Types.ObjectId,
