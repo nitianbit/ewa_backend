@@ -1,0 +1,6 @@
+name,phone,email,countryCode,balance,role,address,city,state,company
+Alex Rodriguez,9876543210,alex.rodriguez@email.com,91,100,1013-e,123 Main St,New York,NY,TechCorp
+Emma Watson,8765432109,emma.watson@email.com,91,250,1013-e,456 Oak Ave,Los Angeles,CA,FinancePro
+Ryan Chen,7654321098,ryan.chen@email.com,91,50,1013-e,789 Pine Rd,Chicago,IL,StartupInc
+Olivia Martinez,6543210987,olivia.martinez@email.com,91,500,1013-e,321 Maple Ln,Houston,TX,HealthCare
+Daniel Kim,5432109876,daniel.kim@email.com,91,75,1013-e,654 Elm St,San Francisco,CA,EduTech

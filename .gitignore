@@ -71,3 +71,5 @@ temp/
 Thumbs.db
 *.bak
 *.orig
+
+package-lock.json

@@ -8,6 +8,7 @@ import Laboratory from "../../../db/models/Laboratories.js";
 import Offer from "../../../db/models/Offer.js";
 import Review from "../../../db/models/Reviews.js";
 import mongoose from "mongoose";
+import Patient from "../../../db/models/Patient.js";
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
@@ -25,7 +26,8 @@ export const MODULES = {
     AVAILABILITY: "availability",
     APPOINTMENT: "appointments",
     REVIEW: "reviews",
-    OFFER: "offer"
+    OFFER: "offer",
+    PATIENTS:'patients'
 };
 
 export const getModule = (module) => {
@@ -50,6 +52,8 @@ export const getModule = (module) => {
             return Review;
         case MODULES.OFFER:
             return Offer;
+        case MODULES.PATIENTS:
+            return Patient;
         default:
             break;
     }
