@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const otpSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true }, // Reference to User
     otp: { type: String, required: true }, // OTP value
     target: { type: String,enum: ['phone', 'email'], required: true }, // Phone number or email address
     createdAt: { type: Date }, // Automatically deletes after 5 minutes
