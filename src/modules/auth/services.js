@@ -1,37 +1,37 @@
-import { User, USER_TYPE } from '../../db/models/User.js';
+import Patient from '../../db/models/Patient.js'
 import { OTP } from '../../db/models/Otp.js';
-
+import { USER_TYPE } from '../../db/models/Admins.js';
 
 // User
 // Get a user by email
 export const getUserByEmail = async (email) => {
-  return await User.findOne({ email }).lean();
+  return await Patient.findOne({ email }).lean();
 };
 
 // Get a user by phone
 export const getUserByPhone = async (phone, countryCode) => {
-  return await User.findOne({ phone, countryCode }).lean();
+  return await Patient.findOne({ phone, countryCode }).lean();
 }
 
 // Get a user 
 export const getUser = async (filter) => {
-  return await User.findOne(filter).lean();
+  return await Patient.findOne(filter).lean();
 };
 
 // Get a user by ID without sensitive fields
 export const getUserById = async (id) => {
-  return await User.findById(id).select('-password -userType').lean();
+  return await Patient.findById(id).select('-password -userType').lean();
 };
 
 // Create a new user
 export const createUser = async (userData) => {
-  const newUser = new User(userData);
+  const newUser = new Patient(userData);
   return await newUser.save();
 };
 
 // Update a user's data
 export const updateUser = async (id, updatedData) => {
-  return await User.findByIdAndUpdate(id, updatedData, { new: true }) // Ensures updated data is returned
+  return await Patient.findByIdAndUpdate(id, updatedData, { new: true }) // Ensures updated data is returned
     .select('-password -userType')
     .lean();
 };
@@ -74,7 +74,7 @@ export const verifyOTPQuery = async (otp, otpId, userId) => {
 
   // Mark OTP as verified (optional)
   await OTP.findByIdAndUpdate(otpData._id, { isVerified: true });
-  await User.findByIdAndUpdate(userId, { isVerified: true });
+  await Patient.findByIdAndUpdate(userId, { isVerified: true });
 
   await deleteOTPByUserId(otpData?._id); // Delete all OTPs for the user after verification
   return true;
