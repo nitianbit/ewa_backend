@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { USER_TYPE } from './Admins.js';
 
 const schema = new mongoose.Schema({
     name: String,
@@ -7,7 +8,7 @@ const schema = new mongoose.Schema({
     countryCode: { type: Number, default: 91 },
     createdAt: { type: Number, },
     balance: { type: Number, default: 0 },
-    roles: { type: [String] }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
+    role: { type: String, default: USER_TYPE.USER }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
     address: { type: String },
     city: { type: String },
     company: { type: String, default: '' },
@@ -17,15 +18,8 @@ const schema = new mongoose.Schema({
     disabled: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false }
 }, {
-    collection: 'User',
+    collection: 'Patient',
 });
 
-export const User = mongoose.model('User', schema);
-
-export const USER_TYPE = {
-    USER: "1013-e",
-    ADMIN: "1112-e",
-    SUPER_ADMIN: "1211-e",
-    SUPERVISOR: "1310-e"
-};
-
+const Patient = mongoose.model('Patient', schema);
+export default Patient
