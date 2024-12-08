@@ -1,5 +1,3 @@
-import { USER_TYPE, User } from "../../db/models/User.js";
-// import { sendEmail } from "../../services/OTP/email.js";
 import { sendResponse } from "../../utils/helper.js"
 import { checkUserRole, createOrUpdateOTP, createUser, getUser, getUserByEmail, getUserByPhone, modifyRole, verifyOTPQuery } from "./services.js";
 import { createToken } from "./middlewares.js";
