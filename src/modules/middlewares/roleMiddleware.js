@@ -1,6 +1,6 @@
 import { sendResponse } from '../../utils/helper.js';
 import { decodeToken } from '../auth/middlewares';
-import { getModule } from '../default/utils/helper.js';
+import { getModule, MODULES } from '../default/utils/helper.js';
 
 const middleware = async (req, res, next, requiredRole, module) => {
     try {
@@ -26,7 +26,7 @@ const middleware = async (req, res, next, requiredRole, module) => {
     }
 };
 
-const doctorsMiddleware = (req, res, next) => middleware(req, res, next, "1013-e", "doctors");
-const laboratoriesMiddleware = (req, res, next) => middleware(req, res, next, "1013-e", "laboratories");
+const doctorsMiddleware = (req, res, next) => middleware(req, res, next, "1013-e", MODULES.DOCTOR);
+const laboratoriesMiddleware = (req, res, next) => middleware(req, res, next, "1013-e", MODULES.LABORATORY);
 
-module.exports = { middleware, doctorsMiddleware, laboratoriesMiddleware };
+module.exports = { doctorsMiddleware, laboratoriesMiddleware };

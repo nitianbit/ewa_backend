@@ -15,32 +15,45 @@ export const moduleMiddlewares = {
     'doctors': [verifyToken]
 }
 
+export const MODULES = {
+    ADMIN: "admin",
+    SUPERVISOR: "supervisor",
+    DOCTOR: "doctors",
+    HOSPITAL: "hospitals",
+    LABORATORY: "laboratories",
+    DEPARTMENT: "departments",
+    AVAILABILITY: "availability",
+    APPOINTMENT: "appointments",
+    REVIEW: "reviews",
+    OFFER: "offer"
+};
+
 export const getModule = (module) => {
     switch (module) {
-        case 'admin':
+        case MODULES.ADMIN:
             return moduleMiddlewares.admin;
-        case 'supervisor':
+        case MODULES.SUPERVISOR:
             return moduleMiddlewares.supervisor;
-        case 'doctors':
-            return Doctor
-        case 'hospitals':
-            return Hospital
-        case 'laboratories':
-            return Laboratory
-        case 'departments':
-            return Department
-        case 'availability':
-            return Availability
-        case 'appointments':
-            return Appointment
-        case 'reviews':
-            return Review
-        case "offer":
-            return Offer
+        case MODULES.DOCTOR:
+            return Doctor;
+        case MODULES.HOSPITAL:
+            return Hospital;
+        case MODULES.LABORATORY:
+            return Laboratory;
+        case MODULES.DEPARTMENT:
+            return Department;
+        case MODULES.AVAILABILITY:
+            return Availability;
+        case MODULES.APPOINTMENT:
+            return Appointment;
+        case MODULES.REVIEW:
+            return Review;
+        case MODULES.OFFER:
+            return Offer;
         default:
             break;
     }
-}
+};
 
 export const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
