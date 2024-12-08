@@ -1,5 +1,5 @@
 // db/services/appointment.service.js
-import { User } from "../../db/models/User.js";
+import Patient from '../../db/models/Patient.js'
 import Appointment from '../../db/models/Appointment.js'
 
 export const getTotalAppointments = async () => {
@@ -49,7 +49,7 @@ export const getTodaysEarnings = async () => {
 
 
 export const getTotalUsers = async () => {
-  return await User.countDocuments();
+  return await Patient.countDocuments();
 };
 
 export const getTodaysUsers = async () => {
@@ -57,5 +57,5 @@ export const getTodaysUsers = async () => {
   const startOfDay = new Date(today.setHours(0, 0, 0, 0));
   const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
-  return await User.countDocuments({ createdAt: { $gte: startOfDay, $lte: endOfDay } });
+  return await Patient.countDocuments({ createdAt: { $gte: startOfDay, $lte: endOfDay } });
 };
