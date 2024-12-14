@@ -1,6 +1,6 @@
 import { sendResponse } from "../../utils/helper.js"
 import { checkUserRole, createOrUpdateOTP, createUser, getUser, getUserByEmail, getUserByPhone, modifyRole, verifyOTPQuery } from "./services.js";
-import { createToken } from "./middlewares.js";
+import { createToken, decodeToken } from "./middlewares.js";
 import { logger } from "../../utils/logger.js";
 
 export const login = async (req, res) => {
@@ -81,7 +81,7 @@ export const sendOTP = async (req, res) => {
         //     return sendResponse(res, 400, "Something went wrong.");
         // }
         console.log(otp);
-        return sendResponse(res, 200, "OTP sent successfully",  { userId: _id, otpId: otp?._id, otp:otp?.otp });
+        return sendResponse(res, 200, "OTP sent successfully",  { userId: _id, otpId: otp?._id });
     } catch (error) {
         logger.error(error)
         return sendResponse(res, 500, "Internal Server Error", error);
@@ -122,6 +122,20 @@ export const getProfile = async (req, res) => {
         logger.error(error)
         return sendResponse(res, 500, "Internal Server Error", error);
     }
+}
+
+export const verifyToken = (req, res, next) => {
+  try {
+    const token = req.body.token;
+    if (!token) return sendResponse(res, 401, "UnAuthorized.");
+    const decodedData = decodeToken(token);
+    if (!decodedData.success) return sendResponse(res, 401, "UnAuthorized.");
+    req.user = { ...decodedData.data };
+    return sendResponse(res, 200, "Valid token.");
+  } catch (error) {
+    console.log(error)
+    return sendResponse(res, 500, "Internal Server Error", error);
+  }
 }
 
 // export const updateProfile = async (req, res) => {
