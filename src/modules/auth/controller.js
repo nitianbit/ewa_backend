@@ -148,7 +148,7 @@ export const verifyToken = (req, res, next) => {
         const decodedData = decodeToken(token);
         if (!decodedData.success) return sendResponse(res, 401, "UnAuthorized.");
         req.user = { ...decodedData.data };
-        return sendResponse(res, 200, "Valid token.");
+        return sendResponse(res, 200, "Valid token.", req.user);
     } catch (error) {
         console.log(error)
         return sendResponse(res, 500, "Internal Server Error", error);
