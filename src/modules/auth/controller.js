@@ -2,18 +2,21 @@ import { sendResponse } from "../../utils/helper.js"
 import { checkUserRole, createOrUpdateOTP, createUser, getUser, getUserByEmail, getUserByPhone, modifyRole, verifyOTPQuery } from "./services.js";
 import { createToken, decodeToken } from "./middlewares.js";
 import { logger } from "../../utils/logger.js";
+import { getModule } from "../default/utils/helper.js";
 
 export const login = async (req, res) => {
     try {
-        const { email, phone, countryCode = 91 } = req.body; // phone handle
+        const { email, phone, countryCode = 91, role = "doctors" } = req.body; // phone handle
         if (!email && !phone) return sendResponse(res, 400, "Invalid Request. Please send all the details.");
 
         let user;
 
+        const Module = getModule(role)
+
         if (email) {
-            user = await getUserByEmail(email);
+            user = await getUserByEmail(email, Module);
         } else {
-            user = await getUserByPhone(phone, countryCode)
+            user = await getUserByPhone(phone, countryCode, Module)
         }
 
         if (!user) {//don't check for user already exist in google login
@@ -34,15 +37,20 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
     try {
-        const { name, email, phone, countryCode = 91, userType } = req.body; // handle phone
-        if (!name || (!email && (!phone && !countryCode)) || !checkUserRole(userType)) return sendResponse(res, 400, "Invalid Request. Please send all the details.");
+        const { name, email, phone, countryCode = 91, userType, role } = req.body; // handle phone
+        if (!name || (!email && (!phone && !countryCode)) || !(role || !checkUserRole(userType))) {
+            return sendResponse(res, 400, "Invalid Request. Please send all the details.");
+        }
+
+        const Module = getModule(role)
 
         let user = await getUser({
             ...(email && { email }),
             ...(phone && { phone, countryCode }),
-        })
 
-        if (user) {
+        }, Module)
+
+        if (user && user.isVerified) {
             return sendResponse(res, 400, "User already present.");
         }
 
@@ -50,13 +58,15 @@ export const signup = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             countryCode: req.body.countryCode || 91,
-            userType: modifyRole(req.body.userType),
+            ...(role == "admin" && role),
             phone: req.body.phone,
         }
-        const newUser = await createUser(userData)
+        if(!user){
+             user = await createUser(userData, Module)
+        }
         // await sendOTP(newUser, res)
 
-        return sendResponse(res, 200, "OTP verification is Pending", newUser)
+        return sendResponse(res, 200, "OTP verification is Pending", user)
     } catch (error) {
         console.log(error);
         logger.error(error)
@@ -81,7 +91,7 @@ export const sendOTP = async (req, res) => {
         //     return sendResponse(res, 400, "Something went wrong.");
         // }
         console.log(otp);
-        return sendResponse(res, 200, "OTP sent successfully",  { userId: _id, otpId: otp?._id });
+        return sendResponse(res, 200, "OTP sent successfully", { userId: _id, otpId: otp?._id });
     } catch (error) {
         logger.error(error)
         return sendResponse(res, 500, "Internal Server Error", error);
@@ -91,21 +101,28 @@ export const sendOTP = async (req, res) => {
 
 export const verifyOTP = async (req, res) => {
     try {
-        const { otp, otpId, userId } = req.body;
+        const { otp, otpId, userId, role, isTokenRequired = false } = req.body;
         // const user = await User.findById(req.user._id).select("-password -userType").lean();
 
-        const otpData = await verifyOTPQuery(otp, otpId, userId);
+        const Module = getModule(role)
+
+        const otpData = await verifyOTPQuery(otp, otpId, userId, Module);
 
         if (!otpData) {
             return sendResponse(res, 400, "Invalid OTP");
         }
-        const user = await getUser({_id:userId})
-        if(!user){
+        const user = await getUser({ _id: userId }, Module)
+        if (!user) {
             return sendResponse(res, 400, "User not found");
         }
-        let token = createToken(user)
+        if (isTokenRequired) {
+            let token = createToken(user)
 
-        return sendResponse(res, 200, "Account Verified", token);
+            return sendResponse(res, 200, "Account Verified", token);
+        }
+
+        return sendResponse(res, 200, "Account Verified");
+
     } catch (error) {
         logger.error(error)
         return sendResponse(res, 500, "Internal Server Error", error);
@@ -125,17 +142,17 @@ export const getProfile = async (req, res) => {
 }
 
 export const verifyToken = (req, res, next) => {
-  try {
-    const token = req.body.token;
-    if (!token) return sendResponse(res, 401, "UnAuthorized.");
-    const decodedData = decodeToken(token);
-    if (!decodedData.success) return sendResponse(res, 401, "UnAuthorized.");
-    req.user = { ...decodedData.data };
-    return sendResponse(res, 200, "Valid token.");
-  } catch (error) {
-    console.log(error)
-    return sendResponse(res, 500, "Internal Server Error", error);
-  }
+    try {
+        const token = req.body.token;
+        if (!token) return sendResponse(res, 401, "UnAuthorized.");
+        const decodedData = decodeToken(token);
+        if (!decodedData.success) return sendResponse(res, 401, "UnAuthorized.");
+        req.user = { ...decodedData.data };
+        return sendResponse(res, 200, "Valid token.");
+    } catch (error) {
+        console.log(error)
+        return sendResponse(res, 500, "Internal Server Error", error);
+    }
 }
 
 // export const updateProfile = async (req, res) => {
