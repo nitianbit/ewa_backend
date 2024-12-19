@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
     email: { type: String },
     countryCode: { type: Number, default: 91 },
     createdAt: { type: Number, },
-    roles: { type: [String] }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
+    role: { type: [String] }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
     company: { type: String, default: '' },
     profiePic: {type: String,},
     disabled: { type: Boolean, default: false },
