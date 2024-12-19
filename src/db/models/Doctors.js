@@ -4,7 +4,7 @@ import moment from "moment";
 const DoctorSchema = new mongoose.Schema(
     {
       name: { type: String, required: true },
-      specialization: { type: String, required: true },
+      specialization: { type: String},
       email: { type: String, unique: true, required: true },
       phone: Number,
       countryCode: { type: Number, default: 91 },
@@ -19,8 +19,9 @@ const DoctorSchema = new mongoose.Schema(
           ref: 'Department',
         },
       ],
-      fee: { type: Number, required: true },
+      fee: { type: Number },
       isActive: { type: Boolean, default: true },
+      isVerified:{ type: Boolean, default: false },
       createdAt: {
         type: Number,
         default: moment().unix(),
