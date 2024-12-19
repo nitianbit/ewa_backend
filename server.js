@@ -20,7 +20,7 @@ app.use(express.json({ limit: "10mb" }));
 
 app.use("/", (req, res, next) => {
     // res.send("Welcome to the server!");
-    console.log("fdgf")
+    console.log("Welcome to the server!")
     next();
 });
 
