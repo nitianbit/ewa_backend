@@ -9,6 +9,7 @@ import Offer from "../../../db/models/Offer.js";
 import Review from "../../../db/models/Reviews.js";
 import mongoose from "mongoose";
 import Patient from "../../../db/models/Patient.js";
+import { Admins } from "../../../db/models/Admins.js";
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
@@ -33,7 +34,8 @@ export const MODULES = {
 export const getModule = (module) => {
     switch (module) {
         case MODULES.ADMIN:
-            return moduleMiddlewares.admin;
+            return Admins
+            // return moduleMiddlewares.admin;
         case MODULES.SUPERVISOR:
             return moduleMiddlewares.supervisor;
         case MODULES.DOCTOR:

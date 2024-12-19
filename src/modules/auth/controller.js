@@ -78,7 +78,7 @@ export const signup = async (req, res) => {
 export const sendOTP = async (req, res) => {
     try {
         const { email, phone, countryCode, _id } = req.body
-        if (!email || (!phone && !countryCode)) return sendResponse(res, 400, "Invalid Request. Please send all the details.");
+        if (!email && (!phone && !countryCode)) return sendResponse(res, 400, "Invalid Request. Please send all the details.");
 
 
         let otp = await createOrUpdateOTP(_id, email ? "email" : "phone");
