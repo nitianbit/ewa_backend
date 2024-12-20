@@ -6,6 +6,7 @@ const LaboratorySchema = new mongoose.Schema(
       name: { type: String, required: true },
       email: { type: String, unique: true, required: true },
       address: { type: String },
+      role: { type: [String] },
       contactNumber: { type: String },
       hospital: {
         type: mongoose.Schema.Types.ObjectId,

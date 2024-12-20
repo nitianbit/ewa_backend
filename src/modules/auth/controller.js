@@ -58,7 +58,8 @@ export const signup = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             countryCode: req.body.countryCode || 91,
-            ...(role == "admin" && role),
+            // ...(role == "admin" && role),
+            role:[role],
             phone: req.body.phone,
         }
         if(!user){

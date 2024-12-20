@@ -9,6 +9,7 @@ const DoctorSchema = new mongoose.Schema(
       phone: Number,
       countryCode: { type: Number, default: 91 },
       isIndividual: { type: Boolean, default: false },
+      role: { type: [String] },
       hospital: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hospital',
