@@ -28,14 +28,14 @@ const AppointmentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Scheduled", "Completed", "Cancelled", "No Show"],
-      default: "Scheduled",
+      enum: ["SCHD", "COMP", "CNCL", "NOSH"],  //SCHEDULED: "SCHD", COMPLETED: "COMP", CANCELLED: "CNCL", NO_SHOW: "NOSH"
+      default: "SCHD",
     },
     fee: { type: Number, required: true }, // Fee for the appointment
     paymentStatus: {
       type: String,
-      enum: ["Paid", "Pending", "Failed"],
-      default: "Pending",
+      enum: ["PD", "PND", "FLD"], //PAID: "PD", PENDING: "PND", FAILED: "FLD"
+      default: "PND",
     },
     notes: {
       type: String,
