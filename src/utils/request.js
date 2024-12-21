@@ -111,17 +111,13 @@ export const handleGridRequest = async (request, model) => {
     sort[gridRequest.sortBy] = gridRequest.sortAsc ? 1 : -1;
     const filters = gridRequest.filters;
     let query = await model.find(filters).sort(sort);
-    if (gridRequest.rows != -1 && query.length > 0) {
+    if (gridRequest.rows != -1) {
         const skip = (gridRequest.page - 1) * gridRequest.rows;
         const limit = gridRequest.rows;
         query.skip(skip).limit(limit)
     }
+    const rows = await query.exec();
 
-    let rows;
-
-    if (query.length > 0) {
-        rows = await query.exec();
-    }
 
     let total = null;
     if (gridRequest.page == 1) {
