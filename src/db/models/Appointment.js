@@ -3,11 +3,11 @@ import moment from "moment";
 
 const AppointmentSchema = new mongoose.Schema(
   {
-    patient: {
+    patient: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient",
       required: true,
-    },
+    }],
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Doctor",
