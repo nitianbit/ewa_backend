@@ -14,8 +14,8 @@ const schema = new mongoose.Schema({
     address: { type: String },
     city: { type: String },
     company: { type: String, default: '' },
-    state: {},
-    profiePic: {},
+    state: {type: String},
+    profiePic: {type: String},
     password: { type: String },
     disabled: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false }
