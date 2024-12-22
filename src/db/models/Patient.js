@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     age: Number,
     email: { type: String },
     countryCode: { type: Number, default: 91 },
-    gender: { type: String, enum: ['M', 'F', 'O'] }, // Male - M, FeMale - F, Other - O
+    gender: { type: String, enum: ['Male', 'Female', 'Other'] }, // Male - M, FeMale - F, Other - O
     createdAt: { type: Number, },
     balance: { type: Number, default: 0 },
     role: { type: String, default: USER_TYPE.USER }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
