@@ -110,7 +110,7 @@ export const handleGridRequest = async (request, model) => {
     const sort = {};
     sort[gridRequest.sortBy] = gridRequest.sortAsc ? 1 : -1;
     const filters = gridRequest.filters;
-    let query = await model.find(filters).sort(sort);
+    let query =  model.find(filters).sort(sort);
     if (gridRequest.rows != -1) {
         const skip = (gridRequest.page - 1) * gridRequest.rows;
         const limit = gridRequest.rows;
