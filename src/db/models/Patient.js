@@ -4,6 +4,7 @@ import { USER_TYPE } from './Admins.js';
 const schema = new mongoose.Schema({
     name: String,
     phone: Number,
+    age: Number,
     email: { type: String },
     countryCode: { type: Number, default: 91 },
     gender: { type: String, enum: ['Male', 'Female', 'Other'] },
