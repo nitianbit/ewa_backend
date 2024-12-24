@@ -12,7 +12,7 @@ export const routes=[
         middlewares: []
     },
     {
-        path: '/api/bulk-upload',
+        path: '/api/bulk-upload/:module',
         router: bulkUploadRouter,
         middlewares: []
     },
