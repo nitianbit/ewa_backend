@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 import moment from "moment";
+import { APPOINTMENT_STATUS, PAYMENT_STATUS } from "../../utils/constants.js";
 
 const AppointmentSchema = new mongoose.Schema(
   {
-    patient: [{
+    patient: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Patient",
       required: true,
-    }],
+    },
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Doctor",
@@ -23,28 +24,28 @@ const AppointmentSchema = new mongoose.Schema(
     },
     appointmentDate: { type: Date, required: true },
     timeSlot: {
-      start: { type: Number, required: true },  
-      end: { type: Number, required: true },  
+      start: { type: Number, required: true },
+      end: { type: Number, required: true },
     },
     status: {
       type: String,
-      enum: ["SCHD", "COMP", "CNCL", "NOSH"],  //SCHEDULED: "SCHD", COMPLETED: "COMP", CANCELLED: "CNCL", NO_SHOW: "NOSH"
-      default: "SCHD",
+      enum: Object.values(APPOINTMENT_STATUS),  //SCHEDULED: "SCHD", COMPLETED: "COMP", CANCELLED: "CNCL", NO_SHOW: "NOSH"
+      default: APPOINTMENT_STATUS.SCHEDULED,
     },
     fee: { type: Number, required: true }, // Fee for the appointment
     paymentStatus: {
       type: String,
-      enum: ["PD", "PND", "FLD"], //PAID: "PD", PENDING: "PND", FAILED: "FLD"
-      default: "PND",
+      enum: Object.values(PAYMENT_STATUS), //PAID: "PD", PENDING: "PND", FAILED: "FLD"
+      default: PAYMENT_STATUS.PENDING,
     },
     notes: {
       type: String,
     }, // Optional notes from the patient
     createdAt: {
-        type: Number,
-        default: moment().unix(),
-      },
-    updatedAt: { type: Number,  },
+      type: Number,
+      default: moment().unix(),
+    },
+    updatedAt: { type: Number, },
   }
 );
 

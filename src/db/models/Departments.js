@@ -8,7 +8,7 @@ const DepartmentSchema = new mongoose.Schema(
       hospital: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hospital',
-        required: true,
+        required: false,
       },
       createdAt: {
         type: Number,
