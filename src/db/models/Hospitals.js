@@ -13,10 +13,15 @@ const HospitalSchema = new mongoose.Schema(
       },
     ], // departments belong to this hospital
     createdAt: {
-        type: Number,
-        default: moment().unix(),
-      },
-    updatedAt: { type: Number,  },
+      type: Number,
+      default: moment().unix(),
+    },
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: true,
+    },
+    updatedAt: { type: Number, },
   }
 );
 

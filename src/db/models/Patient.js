@@ -14,9 +14,14 @@ const schema = new mongoose.Schema({
     address: { type: String },
     city: { type: String },
     company: { type: String, default: '' },
-    state: {type: String},
-    profiePic: {type: String},
+    state: { type: String },
+    profiePic: { type: String },
     password: { type: String },
+    company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+        required: true,
+    },
     disabled: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false }
 }, {
