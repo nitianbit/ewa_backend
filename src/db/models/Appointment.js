@@ -22,7 +22,7 @@ const AppointmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
     },
-    appointmentDate: { type: Date, required: true },
+    appointmentDate: { type: Number, required: true },
     timeSlot: {
       start: { type: Number, required: true },
       end: { type: Number, required: true },
