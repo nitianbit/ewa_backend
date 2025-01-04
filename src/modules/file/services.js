@@ -46,11 +46,16 @@ export const parseFormFields = async (req) => {
 export const saveFilesToDirectory = (files, module,record_id) => {
     const filePaths = [];
 
-    for (let file of files.pic) {
+    for (let file of files.file) {
         const fileExt = path.extname(file?.originalFilename)
         const fileData = fs.readFileSync(file.filepath);
 
         const fileModulePath = `/files/${module}/${record_id}/${now()}-${file.newFilename}${fileExt}`
+        // Create the directory if it doesn't exist
+        const dirPath = path.join(settings.PROJECT_DIR, `/files/${module}/${record_id}`);
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath, { recursive: true });
+        }
         fs.writeFileSync(`${settings.PROJECT_DIR}${fileModulePath}`, fileData);
         filePaths.push(`api/o/static${fileModulePath}`);
 
