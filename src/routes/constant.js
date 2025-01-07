@@ -4,6 +4,7 @@ import bulkUploadRouter from "../modules/bulk-upload/routes/index.js";
 import dashboardRouter from "../modules/dashboard/routes.js";
 import defaultRouter from "../modules/default/routes/index.js";
 import fileRouter from "../modules/file/routes.js";
+import { verifyToken } from "../modules/middlewares/index.js";
 
  
 export const routes=[
@@ -15,30 +16,30 @@ export const routes=[
     {
         path: '/api/bulk-upload/:module',
         router: bulkUploadRouter,
-        middlewares: []
+        middlewares: [verifyToken]
     },
 
 
     {
         path: '/api/dashboard',
         router: dashboardRouter,
-        middlewares: []
+        middlewares: [verifyToken]
     },
 
     {
         path: '/api/admin',
         router: adminRouter,
+        middlewares: [verifyToken]
+    },
+    {
+        path: '/api/file',
+        router: fileRouter,
         middlewares: []
     },
 
     {
         path: '/api',
         router: defaultRouter,
-        middlewares: []
-    },
-    {
-        path: '/api/file',
-        router: fileRouter,
         middlewares: []
     },
    

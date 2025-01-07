@@ -8,7 +8,7 @@ const schema = new mongoose.Schema({
     createdAt: { type: Number, },
     role: { type: [String] }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
     company: { type: String, default: '' },
-    profilePic: {type: String,},
+    profiePic: {type: String,},
     disabled: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false }
 }, {

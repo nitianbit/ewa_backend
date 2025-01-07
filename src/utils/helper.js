@@ -1,4 +1,5 @@
-
+import path from 'path';
+import fs from 'fs';
 
 export const sendResponse = (res, statusCode, message, data = null) => {
     return res.status(statusCode).json({
@@ -27,3 +28,13 @@ export const getAddressLine = (address) => {
     }
     return null;
   };
+
+export const createDirIfNotExist = (localFilePath) => {
+    const directoryPath = path.dirname(localFilePath);
+
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true });
+        // Recursive ensures all parent directories are created
+        console.log(`Directory created: ${directoryPath}`);
+    }
+}  
