@@ -1,4 +1,4 @@
-import { isValidAdmin, verifyToken } from "../../middlewares/index.js";
+import { isValidAdmin, isValidSupervisor, verifyToken } from "../../middlewares/index.js";
 import Appointment from "../../../db/models/Appointment.js";
 import Availability from "../../../db/models/Availability.js";
 import Department from "../../../db/models/Departments.js";
@@ -18,7 +18,7 @@ import  HR from "../../../db/models/HR.js"
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
-    'supervisor': [verifyToken, isValidAdmin],//accessed by admin or supervisor
+    'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
     'doctors': [verifyToken]
 }
 
