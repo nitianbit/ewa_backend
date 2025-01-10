@@ -1,4 +1,4 @@
-import { isValidAdmin, verifyToken } from "../../middlewares/index.js";
+import { isValidAdmin, isValidSupervisor, verifyToken } from "../../middlewares/index.js";
 import Appointment from "../../../db/models/Appointment.js";
 import Availability from "../../../db/models/Availability.js";
 import Department from "../../../db/models/Departments.js";
@@ -14,10 +14,11 @@ import Company from "../../../db/models/Company.js";
 import { Wellness } from "../../../db/models/Wellness.js";
 import Service from "../../../db/models/Services.js";
 import { Banners } from "../../../db/models/Banners.js";
+import  HR from "../../../db/models/HR.js"
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
-    'supervisor': [verifyToken],//accessed by admin or supervisor
+    'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
     'doctors': [verifyToken]
 }
 
@@ -35,7 +36,8 @@ export const MODULES = {
     PATIENTS:'patients',
     COMPANY:'company',
     WELLNESS:'wellness',
-    SERVICES:'services'
+    SERVICES:'services',
+    HR:"hr"
 };
 
 export const getModule = (module) => {
@@ -44,7 +46,7 @@ export const getModule = (module) => {
             return Admins
             // return moduleMiddlewares.admin;
         case MODULES.SUPERVISOR:
-            return moduleMiddlewares.supervisor;
+            return Admins
         case MODULES.DOCTOR:
             return Doctor;
         case MODULES.HOSPITAL:
@@ -71,6 +73,8 @@ export const getModule = (module) => {
             return Service;
         case MODULES.OFFER:
             return Banners;
+        case MODULES.HR:
+            return HR
         default:
             break;
     }

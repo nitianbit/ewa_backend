@@ -19,9 +19,9 @@ export const Admins = mongoose.model('Admins', schema);
 
 export const USER_TYPE = {
     USER: "1013-e",
-    ADMIN: "1112-e",
+    ADMIN: "admin",
     SUPER_ADMIN: "1211-e",
-    SUPERVISOR: "1310-e"
+    SUPERVISOR: "supervisor"
   };
   
   

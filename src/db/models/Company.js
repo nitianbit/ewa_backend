@@ -4,6 +4,11 @@ import moment from "moment";
 const CompanySchema = new mongoose.Schema(
     {
         name: { type: String, required: true },
+        email: { type: String, unique: true, required: true },
+        phone: Number,
+        countryCode: { type: Number, default: 91 },
+        contactperson: { type: String },
+        noOfUser: { type: Number },
         website: { type: String },
         logo: { type: String },
         createdAt: {
