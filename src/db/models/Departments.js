@@ -9,12 +9,7 @@ const DepartmentSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hospital',
         required: false,
-      },
-      createdAt: {
-        type: Number,
-        default: moment().unix(),
-      },
-    updatedAt: { type: Number,  },
+      }
     }
   );
   

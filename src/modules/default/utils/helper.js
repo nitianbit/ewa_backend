@@ -11,6 +11,9 @@ import mongoose from "mongoose";
 import Patient from "../../../db/models/Patient.js";
 import { Admins } from "../../../db/models/Admins.js";
 import Company from "../../../db/models/Company.js";
+import { Wellness } from "../../../db/models/Wellness.js";
+import Service from "../../../db/models/Services.js";
+import { Banners } from "../../../db/models/Banners.js";
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
@@ -30,7 +33,9 @@ export const MODULES = {
     REVIEW: "reviews",
     OFFER: "offer",
     PATIENTS:'patients',
-    COMPANY:'company'
+    COMPANY:'company',
+    WELLNESS:'wellness',
+    SERVICES:'services'
 };
 
 export const getModule = (module) => {
@@ -54,12 +59,18 @@ export const getModule = (module) => {
             return Appointment;
         case MODULES.REVIEW:
             return Review;
-        case MODULES.OFFER:
-            return Offer;
+        // case MODULES.OFFER:
+        //     return Offer;
         case MODULES.PATIENTS:
             return Patient;
         case MODULES.COMPANY:
             return Company;
+        case MODULES.WELLNESS:
+            return Wellness;
+        case MODULES.SERVICES:
+            return Service;
+        case MODULES.OFFER:
+            return Banners;
         default:
             break;
     }

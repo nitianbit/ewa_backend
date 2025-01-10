@@ -2,7 +2,7 @@ import formidable from 'formidable';
 import path from 'path';
 import fs from 'fs';
 import settings from '../../../settings.js'
-import { now } from '../../utils/helper.js';
+import { createDirIfNotExist, now } from '../../utils/helper.js';
 
 function fieldsToArray(fields) {
     const fieldsArray = [];
@@ -51,10 +51,12 @@ export const saveFilesToDirectory = (files, module,record_id) => {
         const fileData = fs.readFileSync(file.filepath);
 
         const fileModulePath = `/files/${module}/${record_id}/${now()}-${file.newFilename}${fileExt}`
-        fs.writeFileSync(`${settings.PROJECT_DIR}${fileModulePath}`, fileData);
-        filePaths.push(`api/o/static${fileModulePath}`);
 
-        fs.promises.unlink(file.filepath).then(() => console.log("profile tmp file deleted")).catch(err => console.log({ err }))
+        createDirIfNotExist(`${settings.PROJECT_DIR}${fileModulePath}`);
+        fs.writeFileSync(`${settings.PROJECT_DIR}${fileModulePath}`, fileData);
+        filePaths.push(`file/static${fileModulePath}`);
+
+        // fs.promises.unlink(file.filepath).then(() => console.log("profile tmp file deleted")).catch(err => console.log({ err }))
     }
     return filePaths;
 }
