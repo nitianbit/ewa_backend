@@ -1,16 +1,8 @@
-import defaultRouter from "../modules/default/routes/index.js";
+import { routes } from "./constant.js"
 
- 
- 
-
-export const routes=[
- 
-    {
-        path: '/api',
-        router: defaultRouter,
-        middlewares: []
-    },
-   
-]
-
- 
+const configureRoutes = (app) => {
+    routes.forEach(route => {
+        app.use(route.path, ...(route.middlewares ?? []), route.router)
+    })
+}
+export default configureRoutes

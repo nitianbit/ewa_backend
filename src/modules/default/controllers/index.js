@@ -23,7 +23,7 @@ export const updateRequest = async (req, res) => {
         if (!data) {
             return sendResponse(res, 404, "Record not found");
         }
-        const response = await Model.findByIdAndUpdate(req.body._id, req.body);
+        const response = await Model.findByIdAndUpdate(req.body._id, req.body,{new:true});
         sendResponse(res, 200, "success", response);
     } catch (error) {
         sendResponse(res, 500, "Something went wrong", error);
