@@ -7,8 +7,8 @@ const CompanySchema = new mongoose.Schema(
         email: { type: String, unique: true, required: true },
         phone: Number,
         countryCode: { type: Number, default: 91 },
-        contactperson: { type: String },
-        noOfUser: { type: Number },
+        contactPerson: { type: String },
+        noOfEmployees: { type: Number },
         website: { type: String },
         logo: { type: String },
         createdAt: {
