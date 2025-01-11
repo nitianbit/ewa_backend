@@ -5,6 +5,7 @@ const DoctorSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     specialization: { type: String },
+    description: { type: String },
     email: { type: String, unique: true, required: true },
     phone: Number,
     countryCode: { type: Number, default: 91 },
@@ -15,6 +16,12 @@ const DoctorSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hospital',
     },
+    services: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+      },
+    ],
     departments: [
       {
         type: mongoose.Schema.Types.ObjectId,

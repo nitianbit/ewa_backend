@@ -7,12 +7,18 @@ const LaboratorySchema = new mongoose.Schema(
     email: { type: String, unique: true, required: true },
     address: { type: String },
     role: { type: [String] },
+    description: { type: String },
     contactNumber: { type: String },
     hospital: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hospital',
     }, // Reference to the hospital if affiliated
-    services: [String], // e.g., Blood Test, X-Ray, MRI
+    services: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+      },
+    ],
     isIndependent: { type: Boolean, default: true }, // true if not part of a hospital
     createdAt: {
       type: Number,
@@ -23,6 +29,12 @@ const LaboratorySchema = new mongoose.Schema(
       ref: "Company",
       required: true,
     },
+    departments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department',
+      },
+    ],
     updatedAt: { type: Number, },
   }
 );
