@@ -4,7 +4,7 @@ import moment from "moment";
 const CompanySchema = new mongoose.Schema(
     {
         name: { type: String, required: true },
-        email: { type: String, unique: true, required: true },
+        email: { type: String, required: true },
         phone: Number,
         countryCode: { type: Number, default: 91 },
         contactperson: { type: String },
