@@ -1,4 +1,5 @@
-import { isValidAdmin, verifyToken } from "../modules/middlewares/index.js";
+import path from 'path';
+import fs from 'fs';
 
 export const sendResponse = (res, statusCode, message, data = null) => {
     return res.status(statusCode).json({
@@ -11,30 +12,6 @@ export const sendResponse = (res, statusCode, message, data = null) => {
 
 export const now = () => Math.floor(Date.now() / 1000)
 
-export const moduleMiddlewares = {
-    'corporate': [verifyToken, isValidAdmin],
-    'supervisor': [verifyToken], 
-}
-
-export const getModule = (module) => {
-    switch (module) {
-        case 'user':
-            return User;
-        case 'admin':
-            return Admin;
-        case 'corporate':
-            return Corporates;
-        case 'bank':
-            return Bank;
-        case 'country':
-            return Country;
-        case 'supervisor':
-            return Supervisor;
-
-        default:
-            break;
-    }
-}
 
 export const getAddressLine = (address) => {
     if (address) {
@@ -51,3 +28,13 @@ export const getAddressLine = (address) => {
     }
     return null;
   };
+
+export const createDirIfNotExist = (localFilePath) => {
+    const directoryPath = path.dirname(localFilePath);
+
+    if (!fs.existsSync(directoryPath)) {
+        fs.mkdirSync(directoryPath, { recursive: true });
+        // Recursive ensures all parent directories are created
+        console.log(`Directory created: ${directoryPath}`);
+    }
+}  
