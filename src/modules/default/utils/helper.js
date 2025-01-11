@@ -15,6 +15,7 @@ import { Wellness } from "../../../db/models/Wellness.js";
 import Service from "../../../db/models/Services.js";
 import { Banners } from "../../../db/models/Banners.js";
 import  HR from "../../../db/models/HR.js"
+import Report from "../../../db/models/Report.js";
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
@@ -37,7 +38,8 @@ export const MODULES = {
     COMPANY:'company',
     WELLNESS:'wellness',
     SERVICES:'services',
-    HR:"hr"
+    HR:"hr",
+    REPORT:'report'
 };
 
 export const getModule = (module) => {
@@ -75,6 +77,8 @@ export const getModule = (module) => {
             return Banners;
         case MODULES.HR:
             return HR
+        case MODULES.REPORT:
+            return Report;
         default:
             break;
     }
