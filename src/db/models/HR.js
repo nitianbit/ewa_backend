@@ -11,6 +11,7 @@ const HRSchema = new mongoose.Schema(
       type: Number,
       default: moment().unix(),
     },
+    role:[{type:String}],
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
