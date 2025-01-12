@@ -35,11 +35,6 @@ const DoctorSchema = new mongoose.Schema(
       type: Number,
       default: moment().unix(),
     },
-    company: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
-      required: true,
-    },
     updatedAt: { type: Number, },
   }
 );

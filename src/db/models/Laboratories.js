@@ -24,11 +24,6 @@ const LaboratorySchema = new mongoose.Schema(
       type: Number,
       default: moment().unix(),
     },
-    company: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
-      required: true,
-    },
     departments: [
       {
         type: mongoose.Schema.Types.ObjectId,
