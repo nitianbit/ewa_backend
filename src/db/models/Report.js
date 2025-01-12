@@ -20,6 +20,7 @@ const schema = new mongoose.Schema(
         date: { type: Number, default: moment().unix() },
         createdAt: { type: Number, default: moment().unix() },
         attachments: { type: [String] },
+        company: { type: String }
     }
 );
 
