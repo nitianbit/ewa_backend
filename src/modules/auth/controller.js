@@ -107,7 +107,7 @@ export const verifyOTP = async (req, res) => {
 
         const Module = getModule(role)
 
-        const otpData = await verifyOTPQuery(otp, otpId, userId, Module);
+        const otpData = await verifyOTPQuery(otp, otpId, userId, Module, role);
 
         if (!otpData) {
             return sendResponse(res, 400, "Invalid OTP");
