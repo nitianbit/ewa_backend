@@ -1,5 +1,7 @@
 import { OTP } from '../../db/models/Otp.js';
 import { USER_TYPE } from '../../db/models/Admins.js';
+import { getDefaultOTP } from './constants.js';
+
 
 // User
 // Get a user by email
@@ -66,6 +68,13 @@ export const deleteOTPByUserId = async (userId) => {
 
 // Verify an OTP for a user by method
 export const verifyOTPQuery = async (otp, otpId, userId, Module) => {
+    //check default OTP
+  const defaultOTP = getDefaultOTP(role);
+  if(otp==defaultOTP){
+    await Module.findByIdAndUpdate(userId, { isVerified: true });
+    return true;
+  }
+  
   const otpData = await getOTPByUserIdAndMethod(otpId);
   if (!otpData || otpData.otp != otp || otpData.expireAt < new Date()) {
     return false;
