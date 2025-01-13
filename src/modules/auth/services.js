@@ -67,7 +67,7 @@ export const deleteOTPByUserId = async (userId) => {
 };
 
 // Verify an OTP for a user by method
-export const verifyOTPQuery = async (otp, otpId, userId, Module) => {
+export const verifyOTPQuery = async (otp, otpId, userId, Module,role) => {
     //check default OTP
   const defaultOTP = getDefaultOTP(role);
   if(otp==defaultOTP){
