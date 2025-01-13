@@ -5,6 +5,7 @@ import dashboardRouter from "../modules/dashboard/routes.js";
 import defaultRouter from "../modules/default/routes/index.js";
 import fileRouter from "../modules/file/routes.js";
 import { verifyToken } from "../modules/middlewares/index.js";
+import notificationRouter from "../modules/notification/routes.js";
 
  
 export const routes=[
@@ -34,6 +35,11 @@ export const routes=[
     {
         path: '/api/file',
         router: fileRouter,
+        middlewares: []
+    },
+    {
+        path: '/api/notification',
+        router: notificationRouter,
         middlewares: []
     },
 
