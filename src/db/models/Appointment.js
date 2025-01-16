@@ -12,7 +12,6 @@ const AppointmentSchema = new mongoose.Schema(
     doctor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Doctor",
-      required: true,
     },
     hospital: {
       type: mongoose.Schema.Types.ObjectId,
@@ -51,6 +50,11 @@ const AppointmentSchema = new mongoose.Schema(
       ref: "Company",
       required: true,
     },
+    lab: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Laboratory',
+    },
+    type: { type: Number, enum: [1, 2] },//1:report,2:prescription
   }
 );
 
