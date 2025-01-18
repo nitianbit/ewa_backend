@@ -144,7 +144,7 @@ export const getProfile = async (req, res) => {
     }
 }
 
-export const verifyToken = (req, res, next) => {
+export const verifyAdmin = (req, res, next) => {
     try {
         const token = req.body.token;
         if (!token) return sendResponse(res, 401, "UnAuthorized.");

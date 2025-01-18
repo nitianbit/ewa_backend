@@ -17,12 +17,6 @@ import { Banners } from "../../../db/models/Banners.js";
 import  HR from "../../../db/models/HR.js"
 import Report from "../../../db/models/Report.js";
 
-export const moduleMiddlewares = {
-    'admin': [verifyToken, isValidAdmin],
-    'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
-    'doctors': [verifyToken]
-}
-
 export const MODULES = {
     ADMIN: "admin",
     SUPERVISOR: "supervisor",
@@ -41,6 +35,15 @@ export const MODULES = {
     HR:"hr",
     REPORT:'report'
 };
+
+export const moduleMiddlewares = {
+    'admin': [verifyToken, isValidAdmin],
+    'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
+    'doctors': [verifyToken],
+    [MODULES.PATIENTS]:[verifyToken]
+}
+
+
 
 export const getModule = (module) => {
     switch (module) {
