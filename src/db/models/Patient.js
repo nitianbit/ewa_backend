@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
     gender: { type: String, enum: ['Male', 'Female', 'Other'] }, // Male - M, FeMale - F, Other - O
     createdAt: { type: Number, },
     balance: { type: Number, default: 0 },
-    role: { type: String, default: USER_TYPE.USER }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
+    role: { type: String, default: 'patients' }, // [] --- 0-e -> user enable, 0-d -> user disable, 1-e -> admin enable, 1-d -> admin disable
     address: { type: String },
     city: { type: String },
     company: { type: String, default: '' },
