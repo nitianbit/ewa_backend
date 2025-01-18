@@ -4,6 +4,7 @@ import { createToken, decodeToken } from "./middlewares.js";
 import { logger } from "../../utils/logger.js";
 import { getModule, MODULES } from "../default/utils/helper.js";
 import Patient from "../../db/models/Patient.js";
+import { USER_TYPE } from "../../db/models/Admins.js";
 
 export const login = async (req, res) => {
     try {
@@ -51,7 +52,7 @@ export const signup = async (req, res) => {
 
         }, Module);
 
-        const isPatient = [MODULES.PATIENTS].includes(role);
+        const isPatient = [MODULES.PATIENTS].includes(role) || [USER_TYPE.USER].includes(role);
 
         if (user) {
             return sendResponse(res, 400, "User already present.");
