@@ -2,7 +2,7 @@ import { sendResponse } from "../../utils/helper.js"
 import { checkUserRole, createOrUpdateOTP, createUser, getUser, getUserByEmail, getUserByPhone, modifyRole, verifyOTPQuery } from "./services.js";
 import { createToken, decodeToken } from "./middlewares.js";
 import { logger } from "../../utils/logger.js";
-import { getModule } from "../default/utils/helper.js";
+import { getModule, MODULES } from "../default/utils/helper.js";
 import Patient from "../../db/models/Patient.js";
 
 export const login = async (req, res) => {
@@ -24,10 +24,9 @@ export const login = async (req, res) => {
             return sendResponse(res, 400, "User not found.");
         }
 
-        //* for now removing this check
-        // if (user.isVerified === false) {
-        //     return sendResponse(res, 400, "User not verified.");
-        // }
+        if (user.isVerified === false) {
+            return sendResponse(res, 400, "User not verified.");
+        }
         return sendResponse(res, 200, "OTP verification is Pending", user)
 
     } catch (error) {
@@ -50,9 +49,11 @@ export const signup = async (req, res) => {
             ...(email && { email }),
             ...(phone && { phone, countryCode }),
 
-        }, Module)
+        }, Module);
 
-        if (user && user.isVerified) {
+        const isPatient = [MODULES.PATIENTS].includes(role);
+
+        if (user) {
             return sendResponse(res, 400, "User already present.");
         }
 
@@ -61,11 +62,12 @@ export const signup = async (req, res) => {
             email: req.body.email,
             countryCode: req.body.countryCode || 91,
             // ...(role == "admin" && role),
-            role:[role],
+            role: [role],
             phone: req.body.phone,
+            isVerified: isPatient ? false : true //if patient then mark them as unverfied
         }
-        if(!user){
-             user = await createUser(userData, Module)
+        if (!user) {
+            user = await createUser(userData, Module)
         }
         // await sendOTP(newUser, res)
 
