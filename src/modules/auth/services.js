@@ -1,6 +1,7 @@
 import { OTP } from '../../db/models/Otp.js';
 import { USER_TYPE } from '../../db/models/Admins.js';
 import { getDefaultOTP } from './constants.js';
+import { MODULES } from '../default/utils/helper.js';
 
 
 // User
@@ -70,8 +71,12 @@ export const deleteOTPByUserId = async (userId) => {
 export const verifyOTPQuery = async (otp, otpId, userId, Module,role) => {
     //check default OTP
   const defaultOTP = getDefaultOTP(role);
+  const isPatient = [MODULES.PATIENTS].includes(role) || [USER_TYPE.USER].includes(role);
+  
   if(otp==defaultOTP){
-    await Module.findByIdAndUpdate(userId, { isVerified: true });
+    if(!isPatient){
+      await Module.findByIdAndUpdate(userId, { isVerified: true });
+    }
     return true;
   }
   
