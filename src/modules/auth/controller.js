@@ -3,6 +3,7 @@ import { checkUserRole, createOrUpdateOTP, createUser, getUser, getUserByEmail, 
 import { createToken, decodeToken } from "./middlewares.js";
 import { logger } from "../../utils/logger.js";
 import { getModule } from "../default/utils/helper.js";
+import Patient from "../../db/models/Patient.js";
 
 export const login = async (req, res) => {
     try {
@@ -23,9 +24,10 @@ export const login = async (req, res) => {
             return sendResponse(res, 400, "User not found.");
         }
 
-        if (user.isVerified === false) {
-            return sendResponse(res, 400, "User not verified.");
-        }
+        //* for now removing this check
+        // if (user.isVerified === false) {
+        //     return sendResponse(res, 400, "User not verified.");
+        // }
         return sendResponse(res, 200, "OTP verification is Pending", user)
 
     } catch (error) {
@@ -182,3 +184,13 @@ export const verifyToken = (req, res, next) => {
 //     }
 // }
 
+export const getUserProfile = async (req, res) => {
+    try {
+        const user = await Patient.findById(req.user._id).select("-password -userType").lean();
+        return sendResponse(res, 200, "Success", user)
+    } catch (error) {
+        console.log(error);
+        logger.error(error)
+        return sendResponse(res, 500, "Internal Server Error", error);
+    }
+}
