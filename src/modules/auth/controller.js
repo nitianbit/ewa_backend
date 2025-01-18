@@ -65,7 +65,8 @@ export const signup = async (req, res) => {
             // ...(role == "admin" && role),
             role: [role],
             phone: req.body.phone,
-            isVerified: isPatient ? false : true //if patient then mark them as unverfied
+            isVerified: isPatient ? false : true, //if patient then mark them as unverfied
+            ...( req.body.company &&{company: req.body.company})
         }
         if (!user) {
             user = await createUser(userData, Module)
