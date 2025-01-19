@@ -108,7 +108,7 @@ export const sendOTP = async (req, res) => {
 
 export const verifyOTP = async (req, res) => {
     try {
-        const { otp, otpId, userId, role, isTokenRequired = false } = req.body;
+        const { otp, otpId, userId, role } = req.body;
         // const user = await User.findById(req.user._id).select("-password -userType").lean();
 
         const Module = getModule(role)
@@ -122,13 +122,9 @@ export const verifyOTP = async (req, res) => {
         if (!user) {
             return sendResponse(res, 400, "User not found");
         }
-        if (isTokenRequired) {
-            let token = createToken(user)
-
-            return sendResponse(res, 200, "Account Verified", token);
-        }
-
-        return sendResponse(res, 200, "Account Verified");
+ 
+        let token = createToken(user)
+        return sendResponse(res, 200, "Account Verified", token);
 
     } catch (error) {
         logger.error(error)
