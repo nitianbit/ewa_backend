@@ -5,11 +5,11 @@ import Appointment from "../../db/models/Appointment.js";
 import Patient from "../../db/models/Patient.js";
 import Doctor from "../../db/models/Doctors.js";
 import Company from "../../db/models/Company.js";
-import {sendResponse,} from "../../utils/helper.js";
-import {showError} from "../../utils/logger.js";
+import { sendResponse, } from "../../utils/helper.js";
+import { showError } from "../../utils/logger.js";
 import mongoose from "mongoose";
 
-export const getAppointmentAndEarnings = async (req, res)=>{
+export const getAppointmentAndEarnings = async (req, res) => {
   try {
     const [totalAppointments, totalEarnings, todaysAppointments, todaysEarnings] = await Promise.all([
       getTotalAppointments(),
@@ -29,7 +29,7 @@ export const getAppointmentAndEarnings = async (req, res)=>{
   }
 }
 
-export const getUsers = async (req, res)=>{
+export const getUsers = async (req, res) => {
   try {
     const [totalUsers, todaysUsers] = await Promise.all([
       getTotalUsers(),
@@ -48,80 +48,80 @@ export const getUsers = async (req, res)=>{
 
 export const getDashboardData = async (req, res) => {
   try {
-      const { company_id } = req.query; 
+    const { company_id } = req.query;
 
-      const todayStart = moment().startOf('day').toDate();
-      const todayEnd = moment().endOf('day').toDate();
-      const thisWeekStart = moment().startOf('week').toDate();
-      const thisWeekEnd = moment().endOf('week').toDate();
-      const thisMonthStart = moment().startOf('month').toDate();
-      const thisMonthEnd = moment().endOf('month').toDate();
+    const todayStart = moment().startOf('day').toDate();
+    const todayEnd = moment().endOf('day').toDate();
+    const thisWeekStart = moment().startOf('week').toDate();
+    const thisWeekEnd = moment().endOf('week').toDate();
+    const thisMonthStart = moment().startOf('month').toDate();
+    const thisMonthEnd = moment().endOf('month').toDate();
 
-      const matchStage = company_id ? { company: mongoose.Types.ObjectId(company_id) } : {};
+    const matchStage = company_id ? { company: mongoose.Types.ObjectId(company_id) } : {};
 
-      const [
-          totalAppointmentsToday,
-          totalAppointmentsThisWeek,
-          totalAppointmentsThisMonth,
-          totalPatients,
-          totalDoctors,
-          totalCompanies
-      ] = await Promise.all([
-          // Total appointments today
-          Appointment.countDocuments({ ...matchStage, appointmentDate: { $gte: todayStart, $lte: todayEnd } }),
-          // Total appointments this week
-          Appointment.countDocuments({ ...matchStage, appointmentDate: { $gte: thisWeekStart, $lte: thisWeekEnd }}),
-          // Total appointments this month
-          Appointment.countDocuments({ ...matchStage, appointmentDate: { $gte: thisMonthStart, $lte: thisMonthEnd }}),
-          // Total patients
-          Patient.countDocuments(matchStage),
-          // Total doctors
-          Doctor.countDocuments(matchStage),
-          // Total companies
-          company_id ? 1 : Company.countDocuments({})
-      ]);
+    const [
+      totalAppointmentsToday,
+      totalAppointmentsThisWeek,
+      totalAppointmentsThisMonth,
+      totalPatients,
+      totalDoctors,
+      totalCompanies
+    ] = await Promise.all([
+      // Total appointments today
+      Appointment.countDocuments({ ...matchStage, appointmentDate: { $gte: todayStart, $lte: todayEnd } }),
+      // Total appointments this week
+      Appointment.countDocuments({ ...matchStage, appointmentDate: { $gte: thisWeekStart, $lte: thisWeekEnd } }),
+      // Total appointments this month
+      Appointment.countDocuments({ ...matchStage, appointmentDate: { $gte: thisMonthStart, $lte: thisMonthEnd } }),
+      // Total patients
+      Patient.countDocuments(matchStage),
+      // Total doctors
+      Doctor.countDocuments(matchStage),
+      // Total companies
+      company_id ? 1 : Company.countDocuments({})
+    ]);
 
-      return sendResponse(res, 200, "Success", {
-          totalAppointmentsToday,
-          totalAppointmentsThisWeek,
-          totalAppointmentsThisMonth,
-          totalPatients,
-          totalDoctors,
-          totalCompanies
-      });
+    return sendResponse(res, 200, "Success", {
+      totalAppointmentsToday,
+      totalAppointmentsThisWeek,
+      totalAppointmentsThisMonth,
+      totalPatients,
+      totalDoctors,
+      totalCompanies
+    });
   } catch (error) {
-      showError(error);
-      return sendResponse(res, 500, "Internal server error", error);
+    showError(error);
+    return sendResponse(res, 500, "Internal server error", error);
   }
 };
 
 export const patientsByCompany = async (req, res) => {
   try {
     const { company_id } = req.query;
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id)  } } : { $match: {} };
+    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const patientsCompany = await Patient.aggregate([
       matchStage,
       {
         $group: {
-          _id: "$company",  
-          totalPatients: { $sum: 1 }  
+          _id: "$company",
+          totalPatients: { $sum: 1 }
         }
       },
       {
         $lookup: {
-          from: 'companies',  
+          from: 'companies',
           localField: '_id',
           foreignField: '_id',
           as: 'companyDetails'
         }
       },
       {
-        $unwind: "$companyDetails" 
+        $unwind: "$companyDetails"
       },
       {
         $project: {
-          companyName: "$companyDetails.name", 
+          companyName: "$companyDetails.name",
           totalPatients: 1
         }
       }
@@ -141,7 +141,7 @@ export const patientsByCompany = async (req, res) => {
 
 export const appointmentsByCompany = async (req, res) => {
   try {
-    const { company_id } = req.query; 
+    const { company_id } = req.query;
 
     const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
@@ -149,20 +149,20 @@ export const appointmentsByCompany = async (req, res) => {
       matchStage,
       {
         $group: {
-          _id: "$company",  
-          totalAppointments: { $sum: 1 }, 
+          _id: "$company",
+          totalAppointments: { $sum: 1 },
         }
       },
       {
         $lookup: {
-          from: 'companies',  
+          from: 'companies',
           localField: '_id',
           foreignField: '_id',
           as: 'companyDetails'
         }
       },
       {
-        $unwind: "$companyDetails"  
+        $unwind: "$companyDetails"
       },
       {
         $project: {
@@ -194,24 +194,24 @@ export const patientsByDoctor = async (req, res) => {
       matchStage,
       {
         $group: {
-          _id: "$doctor",  
-          totalPatients: { $sum: 1 }  
+          _id: "$doctor",
+          totalPatients: { $sum: 1 }
         }
       },
       {
         $lookup: {
-          from: 'doctors',  
+          from: 'doctors',
           localField: '_id',
           foreignField: '_id',
           as: 'doctorDetails'
         }
       },
       {
-        $unwind: "$doctorDetails" 
+        $unwind: "$doctorDetails"
       },
       {
         $project: {
-          doctorName: "$doctorDetails.name", 
+          doctorName: "$doctorDetails.name",
           totalPatients: 1
         }
       }
@@ -228,6 +228,58 @@ export const patientsByDoctor = async (req, res) => {
     return sendResponse(res, 500, "Internal server error", error);
   }
 };
+
+//to be called from user's side
+export const appointmentSummary = async (req, res) => {
+  try {
+    const userId = req.user._id
+    const [labAppointments, doctorAppointments] = await Promise.all([
+      Appointment.countDocuments({ lab: { $exists: true, $ne: null }, patient: userId }),
+      Appointment.countDocuments({ doctor: { $exists: true, $ne: null }, patient: userId }),
+    ]);
+
+    const departmentCounts = await Appointment.aggregate([
+      { $match: { patient: mongoose.Types.ObjectId(userId) } },
+      {
+        $group: {
+          _id: "$department",
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { count: -1 } },
+      {
+        $lookup: {
+          from: "departments",
+          localField: "_id",
+          foreignField: "_id",
+          as: "department"
+        }
+      },
+      {
+        $unwind: "$department"
+      },
+      {
+        $project: {
+          _id: 0,
+          departmentId: "$department._id",
+          departmentName: "$department.name",
+          count: 1
+        }
+      }
+    ]);
+
+
+    return sendResponse(res, 200, "Success", {
+      labAppointments: labAppointments,
+      doctorAppointments: doctorAppointments,
+      departmentStats: departmentCounts
+    });
+
+  } catch (error) {
+    showError(error);
+    return sendResponse(res, 500, "Internal server error", error);
+  }
+}
 
 
 // no of patient per doctor pie chart

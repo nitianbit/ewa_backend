@@ -1,5 +1,5 @@
 import express from 'express'
-import { appointmentsByCompany, getAppointmentAndEarnings, getDashboardData, getUsers, patientsByCompany, patientsByDoctor } from "./controller.js";
+import { appointmentsByCompany, appointmentSummary, getAppointmentAndEarnings, getDashboardData, getUsers, patientsByCompany, patientsByDoctor } from "./controller.js";
 
 const dashboardRouter = express.Router();
 
@@ -9,4 +9,5 @@ dashboardRouter.get("/stats", getDashboardData);
 dashboardRouter.get("/patients-company-stats", patientsByCompany);
 dashboardRouter.get("/appointments-company-stats", appointmentsByCompany);
 dashboardRouter.get("/patients-doctor-stats", patientsByDoctor);
+dashboardRouter.get("/appointments/summary", appointmentSummary);
 export default dashboardRouter;

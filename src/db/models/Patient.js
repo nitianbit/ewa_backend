@@ -5,6 +5,8 @@ const schema = new mongoose.Schema({
     name: String,
     phone: Number,
     age: Number,
+    height: {type:Number}, //cm
+    weight: {type:Number}, //kg
     email: { type: String },
     countryCode: { type: Number, default: 91 },
     gender: { type: String, enum: ['Male', 'Female', 'Other'] }, // Male - M, FeMale - F, Other - O
