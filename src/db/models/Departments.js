@@ -9,7 +9,8 @@ const DepartmentSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hospital',
         required: false,
-      }
+      },
+      image: { type: String },
     }
   );
   
