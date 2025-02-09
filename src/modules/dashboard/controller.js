@@ -239,7 +239,7 @@ export const appointmentSummary = async (req, res) => {
     ]);
 
     const departmentCounts = await Appointment.aggregate([
-      { $match: { patient: mongoose.Types.ObjectId(userId) } },
+      { $match: { patient: new mongoose.Types.ObjectId(userId) } },
       {
         $group: {
           _id: "$department",
