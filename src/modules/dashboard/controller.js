@@ -276,6 +276,7 @@ export const appointmentSummary = async (req, res) => {
     });
 
   } catch (error) {
+    console.log(error);
     showError(error);
     return sendResponse(res, 500, "Internal server error", error);
   }
