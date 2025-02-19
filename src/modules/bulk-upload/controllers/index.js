@@ -6,7 +6,7 @@ import { bulkUploadDoctors, bulkUploadPatients } from "../services/bulkUploadSer
 
 export const bulkUpload = async (req, res) => {
     try {
-        const { module } = req.body;
+        const module = req.params.module;
         const filePath = req.file?.path;
         let result = null;
         switch (module) {
@@ -17,6 +17,7 @@ export const bulkUpload = async (req, res) => {
                 result = await bulkUploadDoctors(filePath);
                 break;
             default:
+                result = await bulkUploadPatients(filePath);
                 break;
         }
 

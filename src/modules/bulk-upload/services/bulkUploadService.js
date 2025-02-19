@@ -255,13 +255,19 @@ export const bulkUploadPatients = async (filePath) => {
       uniqueFields: ['email', 'phone'],
       transformations: {
         phone: (value) => Number(value),
+        countryCode: (value) => Number(value),
         balance: (value) => Number(value) || 0,
-        role: (value) => value || USER_TYPE.USER
+        role: (value) => value || USER_TYPE.USER,
+        isVerified: (value) => true,
+        height:(value) =>Number(value),
+        weight:(value) =>Number(value),
+        email: (value) => value.toLowerCase(),
+        age: (value) => Number(value)
       },
       validationRules: {
         name: { required: true, type: 'string' },
         email: { required: true, type: 'string' },
-        phone: { required: true, type: 'number', min: 1000000000, max: 9999999999 },
+        phone: { required: true, type: 'number', min: 1, max: 9999999999 },
         balance: { type: 'number', min: 0 }
       },
       skipExisting: true,
