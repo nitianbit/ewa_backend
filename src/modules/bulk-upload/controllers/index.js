@@ -11,13 +11,13 @@ export const bulkUpload = async (req, res) => {
         let result = null;
         switch (module) {
             case MODULES.PATIENTS:
-                result = await bulkUploadPatients(filePath);
+                result = await bulkUploadPatients(filePath,req.body?.company);
                 break;
             case MODULES.DOCTOR:
                 result = await bulkUploadDoctors(filePath);
                 break;
             default:
-                result = await bulkUploadPatients(filePath);
+                result = await bulkUploadPatients(filePath,req.body?.company);
                 break;
         }
 

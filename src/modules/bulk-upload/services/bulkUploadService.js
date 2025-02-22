@@ -247,7 +247,7 @@ class BulkUploadService {
 }
 
 
-export const bulkUploadPatients = async (filePath) => {
+export const bulkUploadPatients = async (filePath,company) => {
   try {
     const result = await BulkUploadService.bulkUpload({
       model: Patient,
@@ -262,7 +262,8 @@ export const bulkUploadPatients = async (filePath) => {
         height:(value) =>Number(value),
         weight:(value) =>Number(value),
         email: (value) => value.toLowerCase(),
-        age: (value) => Number(value)
+        age: (value) => Number(value),
+        company: () => company
       },
       validationRules: {
         name: { required: true, type: 'string' },
