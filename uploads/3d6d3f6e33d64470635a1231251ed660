@@ -1,0 +1,4 @@
+name,email,phone,age,height,weight,countryCode,gender,balance,role,address,city,state,company,disabled,isVerified
+John Doe,johndoe@example.com,9876543210,30,175,70,91,Male,500,"[""0-e""]",123 Main St,New York,NY,60f5caa5d6cbe624d8e0d02b,False,True
+Jane Smith,janesmith@example.com,9123456789,28,165,60,91,Female,1000,"[""0-e""]",456 Elm St,Los Angeles,CA,60f5caa5d6cbe624d8e0d02c,False,False
+Mike Johnson,mikej@example.com,9988776655,35,180,85,91,Male,200,"[""0-d""]",789 Oak St,Chicago,IL,60f5caa5d6cbe624d8e0d02d,True,True
