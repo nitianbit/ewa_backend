@@ -3,13 +3,13 @@ import moment from "moment";
 
 
 const formSchema = new mongoose.Schema({
-    first_nme :{
+    full_name :{
 type: String,
 require : true,},
 
-last_name :{
-  type: String,
-require : true,
+age:{
+  type:String,
+  require: true,
 },
 
 gender:{

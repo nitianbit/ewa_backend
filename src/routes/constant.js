@@ -44,15 +44,14 @@ export const routes=[
         router: patientRouter,
         middlewares: []
     },
-
-    {
-        path: '/api',
-        router: defaultRouter,
-        middlewares: []
-    },
     {
         path: '/api/form',
         router : formRouter,
+        middlewares: []
+    },
+    {
+        path: '/api',
+        router: defaultRouter,
         middlewares: []
     },
    

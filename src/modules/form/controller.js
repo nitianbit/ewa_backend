@@ -20,10 +20,10 @@ export const formGrid = async (request, response) => {
 
 export const handleFormCreateRequest = async (req, res) => {
     try {
-        const { first_name, last_name, gender, email, mobile, address, enquire_about } = req.body;
+        const { full_name,age, gender, email, mobile, address, enquire_about } = req.body;
         // console.log(req.body);
 
-        if (!first_name || !last_name || !gender || !email || !mobile || !address || !enquire_about) {
+        if (!full_name ||!age ||!gender || !email || !mobile || !address || !enquire_about) {
             return res.status(400).json({ success: false, message: "All fields are required" });
         }
 
@@ -33,8 +33,8 @@ export const handleFormCreateRequest = async (req, res) => {
         }
 
         const newFormEntry = new Form({
-            first_name,
-            last_name,
+            full_name,
+            age,
             gender,
             email,
             mobile,
