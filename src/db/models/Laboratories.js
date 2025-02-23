@@ -9,6 +9,11 @@ const LaboratorySchema = new mongoose.Schema(
     role: { type: [String] },
     description: { type: String },
     contactNumber: { type: String },
+    company:{
+         type:mongoose.Schema.Types.ObjectId,
+         ref: 'Company',
+         require:true,
+        },
     hospital: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hospital',

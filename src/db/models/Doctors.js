@@ -17,6 +17,11 @@ const DoctorSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hospital',
     },
+    company:{
+     type:mongoose.Schema.Types.ObjectId,
+     ref: 'Company',
+     require:true,
+    },
     services: [
       {
         type: mongoose.Schema.Types.ObjectId,
