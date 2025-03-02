@@ -3,6 +3,8 @@ import { showError } from "../../utils/logger.js";
 import { parseFormFields, saveFilesToDirectory } from "./services.js";
 import settings from '../../../settings.js'
 import fs from 'fs'
+import mime from 'mime-types'
+import path from "path";
  
 
 
@@ -29,7 +31,8 @@ export const statisFiles = async (req, res) => {
         }
         else {
             let file = fs.readFileSync(localPath);
-            let contentType = 'image/jpeg'
+            // let contentType = 'image/jpeg'
+            let contentType = mime.contentType(path.extname(localPath)) || 'application/octet-stream';
             res.setHeader('Content-Length', file.length);
             res.setHeader('Content-type', contentType);
             res.write(file, 'binary');
