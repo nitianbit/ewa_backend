@@ -7,7 +7,7 @@ import { MODULES } from "../modules/default/utils/helper.js";
 import fileRouter from "../modules/file/routes.js";
 import { verifyToken } from "../modules/middlewares/index.js";
 import patientRouter from "../modules/patients/routes.js";
-
+import formRouter from "../modules/form/routes.js";
  
 export const routes=[
     {
@@ -39,11 +39,15 @@ export const routes=[
         middlewares: []
     },
     {
+        path: '/api/form',
+        router : formRouter,
+        middlewares: []
+    },
+    {
         path: `/api/${MODULES.PATIENTS}`,
         router: patientRouter,
         middlewares: []
     },
-
     {
         path: '/api',
         router: defaultRouter,
