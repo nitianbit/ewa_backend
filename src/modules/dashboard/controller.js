@@ -282,6 +282,86 @@ export const appointmentSummary = async (req, res) => {
   }
 }
 
+// API 1: Patients Count by Age Groups
+export const patientsByAgeGroup = async (req, res) => {
+    try {
+        const { company_id } = req.query;
+        const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+
+        const patientsByAge = await Patient.aggregate([
+            matchStage,
+            {
+                $group: {
+                    _id: {
+                        $switch: {
+                            branches: [
+                                { case: { $lt: ["$age", 20] }, then: "<20" },
+                                { case: { $and: [{ $gte: ["$age", 20] }, { $lte: ["$age", 30] }] }, then: "21-30" },
+                                { case: { $and: [{ $gte: ["$age", 31] }, { $lte: ["$age", 40] }] }, then: "31-40" },
+                                { case: { $and: [{ $gte: ["$age", 41] }, { $lte: ["$age", 50] }] }, then: "41-50" },
+                            ],
+                            default: ">50"
+                        }
+                    },
+                    totalPatients: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    ageGroup: "$_id",
+                    totalPatients: 1
+                }
+            }
+        ]);
+
+        const dataForPieChart = patientsByAge.map(item => ({
+            name: item.ageGroup,
+            value: item.totalPatients
+        }));
+
+        return sendResponse(res, 200, "Success", dataForPieChart);
+    } catch (error) {
+        showError(error);
+        return sendResponse(res, 500, "Internal server error", error);
+    }
+};
+
+// API 2: Patients Count by Gender
+export const patientsByGender = async (req, res) => {
+    try {
+        const { company_id } = req.query;
+        const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+
+        const patientsByGender = await Patient.aggregate([
+            matchStage,
+            {
+                $group: {
+                    _id: "$gender",
+                    totalPatients: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    gender: "$_id",
+                    totalPatients: 1
+                }
+            }
+        ]);
+
+        const dataForPieChart = patientsByGender.map(item => ({
+            name: item.gender,
+            value: item.totalPatients
+        }));
+
+        return sendResponse(res, 200, "Success", dataForPieChart);
+    } catch (error) {
+        showError(error);
+        return sendResponse(res, 500, "Internal server error", error);
+    }
+};
+
 
 // no of patient per doctor pie chart
 // company wise employeed pie chart (only for admin)

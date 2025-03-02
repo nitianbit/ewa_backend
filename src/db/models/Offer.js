@@ -55,6 +55,11 @@ const OfferSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Company",
+    required: true,
+  },
 }, { timestamps: true });
 
 const Offer = mongoose.model('Offer', OfferSchema);
