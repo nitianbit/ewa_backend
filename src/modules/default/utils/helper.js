@@ -14,9 +14,10 @@ import Company from "../../../db/models/Company.js";
 import { Wellness } from "../../../db/models/Wellness.js";
 import Service from "../../../db/models/Services.js";
 import { Banners } from "../../../db/models/Banners.js";
-import  HR from "../../../db/models/HR.js"
+import HR from "../../../db/models/HR.js"
 import Report from "../../../db/models/Report.js";
 import { ServiceImage } from "../../../db/models/ServiceImage.js";
+import Package from "../../../db/models/Packages.js";
 
 export const MODULES = {
     ADMIN: "admin",
@@ -29,20 +30,21 @@ export const MODULES = {
     APPOINTMENT: "appointments",
     REVIEW: "reviews",
     OFFER: "offer",
-    PATIENTS:'patients',
-    COMPANY:'company',
-    WELLNESS:'wellness',
-    SERVICES:'services',
-    HR:"hr",
-    REPORT:'report',
-    SERVICE_IMAGES:'service-images'
+    PATIENTS: 'patients',
+    COMPANY: 'company',
+    WELLNESS: 'wellness',
+    SERVICES: 'services',
+    HR: "hr",
+    REPORT: 'report',
+    SERVICE_IMAGES: 'service-images',
+    PACKAGES: 'package'
 };
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
     'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
     'doctors': [verifyToken],
-    [MODULES.PATIENTS]:[verifyToken]
+    [MODULES.PATIENTS]: [verifyToken]
 }
 
 
@@ -51,7 +53,7 @@ export const getModule = (module) => {
     switch (module) {
         case MODULES.ADMIN:
             return Admins
-            // return moduleMiddlewares.admin;
+        // return moduleMiddlewares.admin;
         case MODULES.SUPERVISOR:
             return Admins
         case MODULES.DOCTOR:
@@ -86,6 +88,8 @@ export const getModule = (module) => {
             return Report;
         case MODULES.SERVICE_IMAGES:
             return ServiceImage;
+        case MODULES.PACKAGES:
+            return Package;
         default:
             break;
     }
