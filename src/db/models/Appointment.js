@@ -21,6 +21,14 @@ const AppointmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
     },
+    package: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Package",
+    },
+    selectionType: {
+      type: String, // "1" for Department, "2" for Package
+      required: true,
+    },
     appointmentDate: { type: Number, required: true },
     timeSlot: {
       start: { type: Number, required: true },
@@ -28,22 +36,17 @@ const AppointmentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: Object.values(APPOINTMENT_STATUS), // SCHEDULED: "SCHD", COMPLETED: "COMP", CANCELLED: "CNCL", NO_SHOW: "NOSH"
+      enum: Object.values(APPOINTMENT_STATUS),
       default: APPOINTMENT_STATUS.SCHEDULED,
     },
     fee: { type: Number, required: true },
     paymentStatus: {
       type: String,
-      enum: Object.values(PAYMENT_STATUS), // PAID: "PD", PENDING: "PND", FAILED: "FLD"
+      enum: Object.values(PAYMENT_STATUS),
       default: PAYMENT_STATUS.PENDING,
     },
-    notes: {
-      type: String,
-    },
-    createdAt: {
-      type: Number,
-      default: moment().unix(),
-    },
+    notes: { type: String },
+    createdAt: { type: Number, default: moment().unix() },
     updatedAt: { type: Number },
     company: {
       type: mongoose.Schema.Types.ObjectId,
@@ -57,43 +60,61 @@ const AppointmentSchema = new mongoose.Schema(
     type: { type: Number, enum: [1, 2] }, // 1: report, 2: prescription
     doctor_name: { type: String },
     department_name: { type: String },
+    department_image: { type: String },
+    package_name: { type: String }, // Package name
+    package_image: { type: String }, // Package image
     laboratory_name: { type: String },
-    department_image: { type: String }, // Add department_image field to store the image URL
   }
 );
 
-// Pre-save middleware to populate doctor_name, department_name, laboratory_name, and department_image
+// Pre-save middleware to populate names and images
 AppointmentSchema.pre("save", async function (next) {
   try {
     // Populate doctor_name
     if (this.doctor) {
       const doctor = await mongoose.model("Doctor").findById(this.doctor);
       if (doctor) {
-        this.doctor_name = doctor.name; // Assuming doctor has a 'name' field
+        this.doctor_name = doctor.name;
       }
     }
 
-    // Populate department_name and department_image
-    if (this.department) {
+    if (this.selectionType === "1" && this.department) {
+      // Populate department_name and department_image
       const department = await mongoose.model("Department").findById(this.department);
       if (department) {
-        this.department_name = department.name; // Assuming department has a 'name' field
-        this.department_image = department.image; // Assuming department has an 'image' field
+        this.department_name = department.name;
+        this.department_image = department.image;
       }
+      // Remove package-related fields if department is selected
+      this.package = undefined;
+      this.package_name = undefined;
+      this.package_image = undefined;
+    }
+
+    if (this.selectionType === "2" && this.package) {
+      // Populate package_name and package_image
+      const packageData = await mongoose.model("Package").findById(this.package);
+      if (packageData) {
+        this.package_name = packageData.name;
+        this.package_image = packageData.image;
+      }
+      // Remove department-related fields if package is selected
+      this.department = undefined;
+      this.department_name = undefined;
+      this.department_image = undefined;
     }
 
     // Populate laboratory_name
     if (this.lab) {
       const lab = await mongoose.model("Laboratory").findById(this.lab);
       if (lab) {
-        this.laboratory_name = lab.name; // Assuming laboratory has a 'name' field
+        this.laboratory_name = lab.name;
       }
     }
 
-    // Proceed with saving the document
     next();
   } catch (error) {
-    next(error); // Pass any errors to the next middleware or error handler
+    next(error);
   }
 });
 
