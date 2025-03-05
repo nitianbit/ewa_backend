@@ -1,16 +1,17 @@
 import express from 'express'
-import { getProfile, login, signup, adminLogin, updateProfile, sendVerificationOTP } from './controller.js';
+import { login, signup, sendOTP, verifyOTP, getProfile, getUserProfile, verifyAdmin } from './controller.js';
+import { verifyToken } from '../middlewares/index.js';
 const authRouter = express.Router();
 
 authRouter.post("/login", login)
-authRouter.post("/admin-login", adminLogin)
 authRouter.post("/signup", signup),
-authRouter.get("/send-verification-mail", sendVerificationOTP);
-authRouter.post("/verify", sendVerificationOTP);
-
-authRouter.get("/get", getProfile)
-authRouter.put("/update", updateProfile)
+authRouter.post("/send-otp", sendOTP),
+authRouter.post("/verify-otp", verifyOTP);
+authRouter.post("/verify-token", verifyAdmin);
+authRouter.get("/getAdminProfile", getProfile);
+authRouter.get("/profile",verifyToken, getUserProfile);
 
 export default authRouter;
+
 
 
