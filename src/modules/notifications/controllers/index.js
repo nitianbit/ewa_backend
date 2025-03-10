@@ -3,6 +3,7 @@ import { NotificationModel } from "../../../db/models/Notifications.js";
 import { Tokens } from "../../../db/models/Tokens.js";
 import { sendResponse } from "../../../utils/helper.js";
 import { showError } from "../../../utils/logger.js";
+import notification from "../services/index.js";
 
 
 export const saveDeviceToken = async (req, res) => {
@@ -47,5 +48,15 @@ export const sendNotification = async (req, res) => {
     }
 }
 
+
+export const executePendingNotifications=async(req,res)=>{
+    try {
+        notification.executePendingNotifications();      
+        return sendResponse(res, 200, "success");
+    } catch (error) {
+        showError(error);
+        return sendResponse(res, 500, "Internal server error", error);
+    }
+}
 
 
