@@ -8,6 +8,7 @@ import fileRouter from "../modules/file/routes.js";
 import { verifyToken } from "../modules/middlewares/index.js";
 import patientRouter from "../modules/patients/routes.js";
 import formRouter from "../modules/form/routes.js";
+import notificationRouter from "../modules/notifications/routes/index.js";
  
 export const routes=[
     {
@@ -46,6 +47,11 @@ export const routes=[
     {
         path: `/api/${MODULES.PATIENTS}`,
         router: patientRouter,
+        middlewares: []
+    },
+    {
+        path: `/api/tokens`,
+        router: notificationRouter,
         middlewares: []
     },
     {
