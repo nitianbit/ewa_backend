@@ -50,7 +50,7 @@ export const routes=[
         middlewares: []
     },
     {
-        path: `/api/tokens`,
+        path: `/api/notification`,
         router: notificationRouter,
         middlewares: []
     },
