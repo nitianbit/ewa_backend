@@ -6,6 +6,6 @@ const notificationRouter = express.Router();
 
 notificationRouter.post('/save', verifyToken, saveDeviceToken);
 notificationRouter.post('/schedule', verifyToken, sendNotification);
-notificationRouter.post('/execute-pending-notifications', executePendingNotifications);
+notificationRouter.get('/execute-pending-notifications', executePendingNotifications);
 
 export default notificationRouter;
