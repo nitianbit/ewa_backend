@@ -18,6 +18,7 @@ import HR from "../../../db/models/HR.js"
 import Report from "../../../db/models/Report.js";
 import { ServiceImage } from "../../../db/models/ServiceImage.js";
 import Package from "../../../db/models/Packages.js";
+import { NotificationModel } from "../../../db/models/Notifications.js";
 
 export const MODULES = {
     ADMIN: "admin",
@@ -37,14 +38,16 @@ export const MODULES = {
     HR: "hr",
     REPORT: 'report',
     SERVICE_IMAGES: 'service-images',
-    PACKAGES: 'package'
+    PACKAGES: 'package',
+    NOTIFICATION:'notification'
 };
 
 export const moduleMiddlewares = {
     'admin': [verifyToken, isValidAdmin],
     'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
     'doctors': [verifyToken],
-    [MODULES.PATIENTS]: [verifyToken]
+    [MODULES.PATIENTS]: [verifyToken],
+    [MODULES.NOTIFICATION]: [verifyToken]
 }
 
 
@@ -90,6 +93,8 @@ export const getModule = (module) => {
             return ServiceImage;
         case MODULES.PACKAGES:
             return Package;
+        case MODULES.NOTIFICATION:
+            return NotificationModel;
         default:
             break;
     }
