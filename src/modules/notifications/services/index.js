@@ -75,6 +75,7 @@ class Notification {
 
             for (const notification of pendingNotifications) {
                 try {
+                    let sent = false;
                     //send notification to individual user
                     if (notification.user_id) {
                         const fcm = await Tokens.findOne({ user_id: notification.user_id });
@@ -85,6 +86,7 @@ class Notification {
                                 notification: notification.notification
                             });
                         }
+                        sent = true;
                         //send by company_id
                     } else if (notification.company_id) {
                         const users = await Patient.find({ company_id: notification.company_id });
@@ -96,6 +98,7 @@ class Notification {
                             data: notification.payload,
                             notification: notification.notification
                         });
+                        sent = true;
                     } else if (users.length) {
                         const fcms = await Tokens.find({ user_id: { $in: users } });
                         const fcmIds = fcms.map(fcm => fcm.fcm);
@@ -104,7 +107,16 @@ class Notification {
                             data: notification.payload,
                             notification: notification.notification
                         });
+                        sent = true;
                     }
+
+                    if (sent) {
+                        await NotificationModel.updateOne(
+                            { _id: notification._id },
+                            { $set: { status: "sent" } }
+                        );
+                    }
+    
                 } catch (error) {
 
                 }
