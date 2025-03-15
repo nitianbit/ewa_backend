@@ -89,7 +89,7 @@ class Notification {
                         sent = true;
                         //send by company_id
                     } else if (notification.company_id) {
-                        const users = await Patient.find({ company_id: notification.company_id });
+                        const users = await Patient.find({ company: notification.company_id });
                         const fcms = await Tokens.find({ user_id: { $in: users.map(user => user._id) } });
                         const fcmIds = fcms.map(fcm => fcm.fcm);
 
