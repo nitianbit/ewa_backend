@@ -1,5 +1,11 @@
 import admin from "firebase-admin";
-import serviceAccount from "../../../../ewa-health-care-firebase-adminsdk-yega2-83afdceeb3.json" assert { type: "json" };
+// import serviceAccount from "../../../../ewa-health-care-firebase-adminsdk-yega2-fd26a5858e.json" assert { type: "json" };
+import fs from "fs";
+import { URL } from "url";
+
+const serviceAccount = JSON.parse(
+  fs.readFileSync(new URL("../../../../ewa-health-care-firebase-adminsdk-yega2-fd26a5858e.json", import.meta.url), "utf-8")
+);
 import { showError } from "../../../utils/logger.js";
 import moment from "moment";
 import { NotificationModel } from "../../../db/models/Notifications.js";
@@ -13,7 +19,7 @@ class Notification {
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
         });
-
+ 
     }
 
     createMessageObject = (data, notification) => {
