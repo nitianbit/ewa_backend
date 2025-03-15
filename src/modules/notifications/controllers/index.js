@@ -30,14 +30,16 @@ export const sendNotification = async (req, res) => {
         if (!payload) {
             return sendResponse(res, 400, "Payload and scheduledTime are required.");
         }
-
+        const validStatuses = ["pending", "sent", "failed"];
+        const finalStatus = validStatuses.includes(status) ? status : "pending";
         const reqParam = {
             ...(user_id && { user_id }),
             ...(company_id && { company_id }),
             ...(Array.isArray(users) && { users }),
             payload,
             ...(notification && { notification }),
-            ...(scheduledTime ? { scheduledTime } : { scheduledTime: moment().unix() })
+            ...(scheduledTime ? { scheduledTime } : { scheduledTime: moment().unix() }),
+            status: finalStatus,
         }
         const doc = new NotificationModel(reqParam);
         await doc.save();
