@@ -20,6 +20,7 @@ import { ServiceImage } from "../../../db/models/ServiceImage.js";
 import Package from "../../../db/models/Packages.js";
 import { NotificationModel } from "../../../db/models/Notifications.js";
 import Form from "../../../db/models/form.js";
+import Blog from "../../../db/models/blog.js";
 
 export const MODULES = {
     ADMIN: "admin",
@@ -41,7 +42,8 @@ export const MODULES = {
     SERVICE_IMAGES: 'service-images',
     PACKAGES: 'package',
     NOTIFICATION:'notification',
-    FORM:'form'
+    FORM:'form',
+    BLOGS:'blogs'
 };
 
 export const moduleMiddlewares = {
@@ -50,7 +52,8 @@ export const moduleMiddlewares = {
     'doctors': [verifyToken],
     [MODULES.PATIENTS]: [verifyToken],
     [MODULES.NOTIFICATION]: [verifyToken],
-    [MODULES.FORM]: [verifyToken]
+    [MODULES.FORM]: [verifyToken],
+    [MODULES.BLOGS]: [verifyToken],
 }
 
 
@@ -100,6 +103,8 @@ export const getModule = (module) => {
             return NotificationModel;
         case MODULES.FORM:
             return Form;
+        case MODULES.BLOGS:
+            return Blog;
         default:
             break;
     }
