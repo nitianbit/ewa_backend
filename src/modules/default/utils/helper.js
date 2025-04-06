@@ -53,7 +53,6 @@ export const moduleMiddlewares = {
     [MODULES.PATIENTS]: [verifyToken],
     [MODULES.NOTIFICATION]: [verifyToken],
     [MODULES.FORM]: [verifyToken],
-    [MODULES.BLOGS]: [verifyToken],
 }
 
 
