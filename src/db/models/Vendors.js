@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
         required: true,
     },
     disabled: { type: Boolean, default: false },
+    external: { type: Boolean }
 }, {
     collection: 'vendors',
 });
