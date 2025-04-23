@@ -5,6 +5,7 @@ import { logger } from "../../utils/logger.js";
 import { getModule, MODULES } from "../default/utils/helper.js";
 import Patient from "../../db/models/Patient.js";
 import { USER_TYPE } from "../../db/models/Admins.js";
+import {sendOtp } from "../../utils/email.js";
 
 export const login = async (req, res) => {
     try {
@@ -93,6 +94,10 @@ export const sendOTP = async (req, res) => {
             return sendResponse(res, 400, "OTP is not generated");
         }
         // const isOTPSend = email ? await sendEmail(email, otp) : await sendSMS(countryCode, phone, otp);
+        const { success, message } = await sendOtp(email, otp?.otp)
+        if(!success){
+            return sendResponse(res, 500, message, null);
+        }
 
         // if (!isOTPSend) {
         //     return sendResponse(res, 400, "Something went wrong.");
