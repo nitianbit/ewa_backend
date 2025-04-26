@@ -61,6 +61,7 @@ const AppointmentSchema = new mongoose.Schema(
     package_image: { type: String }, // Package image
     laboratory_name: { type: String },
     vendor: { type: String },
+    packages:{type:[String]},//for healhians only
   }
 );
 
