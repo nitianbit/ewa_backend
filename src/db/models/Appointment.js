@@ -60,6 +60,7 @@ const AppointmentSchema = new mongoose.Schema(
     package_name: { type: String }, // Package name
     package_image: { type: String }, // Package image
     laboratory_name: { type: String },
+    vendor: { type: String },
   }
 );
 
