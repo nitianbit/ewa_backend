@@ -4,7 +4,7 @@ import fs from "fs";
 import { URL } from "url";
 
 const serviceAccount = JSON.parse(
-  fs.readFileSync(new URL("../../../../ewa-health-care-firebase-adminsdk-yega2-fd26a5858e.json", import.meta.url), "utf-8")
+    fs.readFileSync(new URL("../../../../ewa-health-care-firebase-adminsdk-yega2-fd26a5858e.json", import.meta.url), "utf-8")
 );
 import { showError } from "../../../utils/logger.js";
 import moment from "moment";
@@ -122,7 +122,7 @@ class Notification {
                             { $set: { status: "sent" } }
                         );
                     }
-    
+
                 } catch (error) {
 
                 }

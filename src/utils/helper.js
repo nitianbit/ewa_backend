@@ -38,3 +38,14 @@ export const createDirIfNotExist = (localFilePath) => {
         console.log(`Directory created: ${directoryPath}`);
     }
 }  
+
+export const getGenderSalutation=(gender)=>{
+    switch(gender){
+        case 'Male':
+            return 'M';
+        case 'Female':
+            return 'F';
+        default:
+            return 'M'        
+    }
+}

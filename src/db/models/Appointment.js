@@ -25,10 +25,6 @@ const AppointmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Package",
     },
-    selectionType: {
-      type: String, // "1" for Department, "2" for Package
-      required: true,
-    },
     appointmentDate: { type: Number, required: true },
     timeSlot: {
       start: { type: Number, required: true },
@@ -64,6 +60,8 @@ const AppointmentSchema = new mongoose.Schema(
     package_name: { type: String }, // Package name
     package_image: { type: String }, // Package image
     laboratory_name: { type: String },
+    vendor: { type: String },
+    packages:{type:[String]},//for healhians only
   }
 );
 
@@ -78,7 +76,7 @@ AppointmentSchema.pre("save", async function (next) {
       }
     }
 
-    if (this.selectionType === "1" && this.department) {
+    if ( this.department) {
       // Populate department_name and department_image
       const department = await mongoose.model("Department").findById(this.department);
       if (department) {
@@ -91,7 +89,7 @@ AppointmentSchema.pre("save", async function (next) {
       this.package_image = undefined;
     }
 
-    if (this.selectionType === "2" && this.package) {
+    if (this.package) {
       // Populate package_name and package_image
       const packageData = await mongoose.model("Package").findById(this.package);
       if (packageData) {

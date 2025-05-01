@@ -19,6 +19,9 @@ import Report from "../../../db/models/Report.js";
 import { ServiceImage } from "../../../db/models/ServiceImage.js";
 import Package from "../../../db/models/Packages.js";
 import { NotificationModel } from "../../../db/models/Notifications.js";
+import Form from "../../../db/models/form.js";
+import Blog from "../../../db/models/blog.js";
+import Vendors from "../../../db/models/Vendors.js";
 
 export const MODULES = {
     ADMIN: "admin",
@@ -39,7 +42,10 @@ export const MODULES = {
     REPORT: 'report',
     SERVICE_IMAGES: 'service-images',
     PACKAGES: 'package',
-    NOTIFICATION:'notification'
+    NOTIFICATION:'notification',
+    FORM:'form',
+    BLOGS:'blogs',
+    VENDORS:'vendors'
 };
 
 export const moduleMiddlewares = {
@@ -47,7 +53,8 @@ export const moduleMiddlewares = {
     'supervisor': [verifyToken, isValidSupervisor],//accessed by admin or supervisor
     'doctors': [verifyToken],
     [MODULES.PATIENTS]: [verifyToken],
-    [MODULES.NOTIFICATION]: [verifyToken]
+    [MODULES.NOTIFICATION]: [verifyToken],
+    [MODULES.FORM]: [verifyToken],
 }
 
 
@@ -95,6 +102,12 @@ export const getModule = (module) => {
             return Package;
         case MODULES.NOTIFICATION:
             return NotificationModel;
+        case MODULES.FORM:
+            return Form;
+        case MODULES.BLOGS:
+            return Blog;
+        case MODULES.VENDORS:
+            return Vendors;
         default:
             break;
     }

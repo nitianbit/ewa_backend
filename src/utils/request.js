@@ -73,9 +73,11 @@ export const extractGridRequest = (request) => {
     delete querymap["sortBy"];
     delete querymap["sortAsc"];
     delete querymap["records"];
+    delete querymap["query"];
 
+    const recievedQuery = JSON.parse(request?.query?.query ?? "{}");
 
-    gridRequest.filters = {};
+    gridRequest.filters = {...recievedQuery};
     let keyword = null;
     for (let key in querymap) {
         if (querymap.hasOwnProperty(key) && key) {
