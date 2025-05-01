@@ -111,7 +111,7 @@ AppointmentSchema.pre("save", async function (next) {
     }
 
     if (this.vendor) {
-      const lab = await mongoose.model("Vendors").findById(this.vendor);
+      const lab = await mongoose.model("vendors").findById(this.vendor);
       if (lab) {
         this.laboratory_name = lab.name;
       }
