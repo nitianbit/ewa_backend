@@ -16,6 +16,7 @@ export const packagesGrid = async (request, response) => {
         
         let gridResponse = null;
         console.log({foundVendor})
+        delete gridRequest.filters
         if(!foundVendor){
             console.log("inside no vendor",gridRequest)
             gridResponse = await execQuery(gridRequest, Package);
