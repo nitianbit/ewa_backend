@@ -15,7 +15,7 @@ export const packagesGrid = async (request, response) => {
         const foundVendor = await Vendors.findById(vendor).lean();
         
         let gridResponse = null;
-        delete gridRequest.filters
+        delete gridRequest.filters.vendor;
         if(!foundVendor){
             gridResponse = await execQuery(gridRequest, Package);
             return sendResponse(response, 200, "success", gridResponse);
