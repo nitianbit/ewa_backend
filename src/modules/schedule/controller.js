@@ -1,7 +1,7 @@
 import { sendResponse } from "../../utils/helper.js";
 import { showError } from "../../utils/logger.js";
 import externalServices from "../externalServices/index.js"
-
+4
 
 export const fetchAvailableSlots = async (req, res) => {
     try {
