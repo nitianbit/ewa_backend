@@ -15,19 +15,15 @@ export const packagesGrid = async (request, response) => {
         const foundVendor = await Vendors.findById(vendor).lean();
         
         let gridResponse = null;
-        console.log({foundVendor})
         delete gridRequest.filters
         if(!foundVendor){
-            console.log("inside no vendor",gridRequest)
             gridResponse = await execQuery(gridRequest, Package);
             return sendResponse(response, 200, "success", gridResponse);
         }
 
         if (!foundVendor?.company) {
-            console.log("no foundVendor?.company",gridRequest)
             gridResponse = await execQuery(gridRequest, Package);
         } else {
-            console.log("externalServices packages")
             let rows = await externalServices.getPackages(vendor);
             gridResponse = {
                 rows,
