@@ -17,13 +17,13 @@ export const packagesGrid = async (request, response) => {
         let gridResponse = null;
         console.log({foundVendor})
         if(!foundVendor){
-            console.log("inside no vendor")
+            console.log("inside no vendor",gridRequest)
             gridResponse = await execQuery(gridRequest, Package);
             return sendResponse(response, 200, "success", gridResponse);
         }
 
         if (!foundVendor?.company) {
-            console.log("no foundVendor?.company")
+            console.log("no foundVendor?.company",gridRequest)
             gridResponse = await execQuery(gridRequest, Package);
         } else {
             console.log("externalServices packages")
