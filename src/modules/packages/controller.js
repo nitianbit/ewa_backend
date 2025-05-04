@@ -21,7 +21,7 @@ export const packagesGrid = async (request, response) => {
             return sendResponse(response, 200, "success", gridResponse);
         }
 
-        if (!foundVendor?.company) {
+        if (!foundVendor?.external) {
             gridResponse = await execQuery(gridRequest, Package);
         } else {
             let rows = await externalServices.getPackages(vendor);
