@@ -101,6 +101,11 @@ AppointmentSchema.pre("save", async function (next) {
       this.department_name = undefined;
       this.department_image = undefined;
     }
+    else if (this.packages && Array.isArray(this.packages) && this.packages.length > 0) {
+      // If Healthians flow: set package_name from packages array
+      this.package_name = this.packages[0];
+      this.package_image = 'file/static/files/package/67c4b699377451c0a329df95/1740945050-bfe7736251d61649cc3f01302.png';	    
+    }
 
     // Populate laboratory_name
     if (this.lab) {
@@ -108,6 +113,11 @@ AppointmentSchema.pre("save", async function (next) {
       if (lab) {
         this.laboratory_name = lab.name;
       }
+    }
+
+
+    if (this.vendor) {
+        this.laboratory_name = this.vendor;
     }
 
     next();
