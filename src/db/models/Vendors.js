@@ -2,11 +2,10 @@ import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema({
     name: String,
-    company: {
+    company: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company",
-        required: true,
-    },
+    }],
     disabled: { type: Boolean, default: false },
     external: { type: Boolean }
 }, {
