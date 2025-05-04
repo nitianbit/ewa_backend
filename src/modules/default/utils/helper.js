@@ -22,6 +22,7 @@ import { NotificationModel } from "../../../db/models/Notifications.js";
 import Form from "../../../db/models/form.js";
 import Blog from "../../../db/models/blog.js";
 import Vendors from "../../../db/models/Vendors.js";
+import Marketing from "../../../db/models/Marketing.js";
 
 export const MODULES = {
     ADMIN: "admin",
@@ -45,7 +46,8 @@ export const MODULES = {
     NOTIFICATION:'notification',
     FORM:'form',
     BLOGS:'blogs',
-    VENDORS:'vendors'
+    VENDORS:'vendors',
+    MARKETING:'marketing'
 };
 
 export const moduleMiddlewares = {
@@ -108,6 +110,8 @@ export const getModule = (module) => {
             return Blog;
         case MODULES.VENDORS:
             return Vendors;
+        case MODULES.MARKETING:
+            return Marketing;
         default:
             break;
     }
