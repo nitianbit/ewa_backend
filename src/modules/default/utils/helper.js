@@ -17,6 +17,8 @@ import { Banners } from "../../../db/models/Banners.js";
 import HR from "../../../db/models/HR.js"
 import Report from "../../../db/models/Report.js";
 import { ServiceImage } from "../../../db/models/ServiceImage.js";
+import { GalleryImage } from "../../../db/models/GalleryImage.js";
+import { Event } from "../../../db/models/Event.js";
 import Package from "../../../db/models/Packages.js";
 import { NotificationModel } from "../../../db/models/Notifications.js";
 import Form from "../../../db/models/form.js";
@@ -42,6 +44,8 @@ export const MODULES = {
     HR: "hr",
     REPORT: 'report',
     SERVICE_IMAGES: 'service-images',
+    GALLERY_IMAGE: 'gallery-image',
+    EVENT:'event',
     PACKAGES: 'package',
     NOTIFICATION:'notification',
     FORM:'form',
@@ -112,6 +116,10 @@ export const getModule = (module) => {
             return Vendors;
         case MODULES.MARKETING:
             return Marketing;
+        case MODULES.GALLERY_IMAGE:
+            return GalleryImage;
+        case MODULES.EVENT:
+            return Event;    
         default:
             break;
     }
