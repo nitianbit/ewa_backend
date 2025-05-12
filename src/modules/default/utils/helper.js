@@ -25,6 +25,7 @@ import Form from "../../../db/models/form.js";
 import Blog from "../../../db/models/blog.js";
 import Vendors from "../../../db/models/Vendors.js";
 import Marketing from "../../../db/models/Marketing.js";
+import SuperBlog from "../../../db/models/SuperBlog.js"
 
 export const MODULES = {
     ADMIN: "admin",
@@ -51,7 +52,8 @@ export const MODULES = {
     FORM:'form',
     BLOGS:'blogs',
     VENDORS:'vendors',
-    MARKETING:'marketing'
+    MARKETING:'marketing',
+    SUPERBLOGS:'superblogs'
 };
 
 export const moduleMiddlewares = {
@@ -120,6 +122,8 @@ export const getModule = (module) => {
             return GalleryImage;
         case MODULES.EVENT:
             return Event;    
+        case MODULES.SUPERBLOGS:
+            return SuperBlog;
         default:
             break;
     }
