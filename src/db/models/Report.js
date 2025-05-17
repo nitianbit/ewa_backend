@@ -23,6 +23,7 @@ const schema = new mongoose.Schema(
         company: { type: String },
         doctor_name: { type: String }, // Add doctor_name field
         laboratory_name: { type: String }, // Add laboratory_name field
+        link: { type: String }
     }
 );
 
