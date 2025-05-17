@@ -7,7 +7,7 @@ import { bulkUploadDoctors, bulkUploadPatients, bulkUploadReports } from "../ser
 
 export const bulkUpload = async (req, res) => {
     try {
-        const module = req.params.module;
+        const module = req.params.module || req.body?.module;
         const filePath = req.file?.path;
         let result = null;
         switch (module) {

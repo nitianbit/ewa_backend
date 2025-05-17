@@ -349,7 +349,7 @@ export const bulkUploadReports = async (filePath) => {
       filePath,
       uniqueFields: [],
       transformations: {
-        type: (value) => Number(value),
+        type: (value) => Number(value)
       },
       validationRules: {
       },
