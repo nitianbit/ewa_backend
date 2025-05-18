@@ -50,12 +50,12 @@ export const getDashboardData = async (req, res) => {
   try {
     const { company_id } = req.query;
 
-    const todayStart = moment().startOf('day').toDate();
-    const todayEnd = moment().endOf('day').toDate();
-    const thisWeekStart = moment().startOf('week').toDate();
-    const thisWeekEnd = moment().endOf('week').toDate();
-    const thisMonthStart = moment().startOf('month').toDate();
-    const thisMonthEnd = moment().endOf('month').toDate();
+    const todayStart = moment().startOf('day').format('YYYYMMDD');
+    const todayEnd = moment().endOf('day').format('YYYYMMDD');
+    const thisWeekStart = moment().startOf('week').format('YYYYMMDD');
+    const thisWeekEnd = moment().endOf('week').format('YYYYMMDD');
+    const thisMonthStart = moment().startOf('month').format('YYYYMMDD');
+    const thisMonthEnd = moment().endOf('month').format('YYYYMMDD');
 
     const matchStage = company_id ? { company: mongoose.Types.ObjectId(company_id) } : {};
 
