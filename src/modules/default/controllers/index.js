@@ -1,17 +1,24 @@
 
 import { sendResponse } from "../../../utils/helper.js";
 import { handleGridRequest } from "../../../utils/request.js";
-import { getModule } from "../utils/helper.js";
+import externalServices from "../../externalServices/index.js";
+import { getModule, MODULES } from "../utils/helper.js";
 
 export const createRequest = async (req, res) => {
     try {
         const module = req.params.module;
         const Model = getModule(module);
         const response = await Model.create(req.body);
+        if (module === MODULES.APPOINTMENT) {
+            await externalServices.createBooking({
+                appointmentData:req.body,
+                user: req.user
+            })
+        }
         sendResponse(res, 200, "success", response);
     } catch (error) {
         console.log(error)
-        sendResponse(res, 500, "Something went wrong", error);
+        sendResponse(res, 500, error?.message??"Something went wrong", error);
     }
 }
 

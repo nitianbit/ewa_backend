@@ -24,35 +24,38 @@ class Service {
     }
 
     createBooking = async ({
-        vendor = VENDORS.HEALTHIANS,
-        packages,//array of selected packages
+        appointmentData,
         user
-    }) => {
-        try {
-            const user = {
-                "_id": "678407b99a4b885a2077f14b",
-                "name": "Shubham Goyal",
-                "phone": 3671516670,
-                "age": 23,
-                "countryCode": 91,
-                "gender": "Male",
-                "balance": 0,
-                "address": "Shop no. 171,Goyal Traders",
-                "company": "67715ab1f98e0c2296c5c4ad",
-                "disabled": false,
-                "isVerified": true,
-                "__v": 0
-            }
-            const promises = await Promise.allSettled([
-                heathianService.createBooking({
-                    user,
-                    packages: ["profile_1", "profile_2"]
-                })
-            ])
-            console.log(promises);
-        } catch (error) {
+    }) => { 
+            const { vendor } = appointmentData;
 
-        }
+            if (vendor === 'healthians') {
+                const userData = {
+                    "_id": user?._id,
+                    "name": user?.name,
+                    "phone": user?.phone,
+                    "age": user?.age,
+                    "countryCode": user?.countryCode,
+                    "gender": user?.gender,
+                    "balance": user?.balance,
+                    "address": appointmentData?.address,
+                    "disabled": false,
+                    "isVerified": true,
+                    "__v": 0
+                }
+                const { stm_id, location, city, zipcode } = appointmentData;
+        
+                await heathianService.createBooking({
+                        user: userData,
+                        packages: appointmentData?.packages,
+                        slot_id: stm_id,
+                        latitude: location?.latitude,
+                        longitude: location?.longitude,
+                        city,
+                        zipcode
+                    }) 
+            }
+            return true; 
     }
 
     rescheduleBooking = async () => {

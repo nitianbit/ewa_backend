@@ -99,7 +99,13 @@ class Service {
     createBooking = async ({
         user,
         packages, //array
+        slot_id,
+        latitude,
+        longitude,
+        city,
+        zipcode
     }) => {
+        const fetchedPackages = await this.getPackages();
         const payload = {
             customer: [
                 {
@@ -112,19 +118,22 @@ class Service {
                 }
             ],
             slot: {
-                slot_id: "123"
+                slot_id
             },
-            package: [{ deal_id: packages }],
+            package: [{
+                deal_id: fetchedPackages?.filter(pack => packages?.includes(pack.test_name))
+                    ?.map(pack => pack?.deal_id)
+            }],
             customer_calling_number: user?.phone,
             billing_cust_name: user?.name,
             gender: getGenderSalutation(user?.gender),
             mobile: user?.phone,
             zone_id: this.credentials.zone_id,
-            latitude: "28.512195944534703",
-            longitude: "77.08483249142313",
+            latitude,
+            longitude,
             address: user?.address,
-            sub_locality: "Gurgaon",
-            zipcode: 122016,
+            sub_locality: city,
+            zipcode:zipcode,
             vendor_billing_user_id: user?._id
         }
         const checksum = this.createChecksum(payload);
@@ -136,10 +145,10 @@ class Service {
             data: payload,
             headers
         })
-        if (response.code == 200) {
+        if (response.code == 200 && response?.status) {
             return response
         }
-        return response
+        throw new Error(response?.message)
     }
 
     getZone = async (latitude, longitude, zipCode) => {
