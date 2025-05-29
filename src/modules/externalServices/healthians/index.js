@@ -145,7 +145,7 @@ class Service {
             data: payload,
             headers
         })
-        if (response.code == 200 && response?.status) {
+        if ( response?.status) {
             return response
         }
         throw new Error(response?.message)
