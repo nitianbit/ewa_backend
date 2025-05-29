@@ -20,6 +20,7 @@ class Service {
         getPackages: (partnerName) => `/${partnerName}/getPartnerProducts`,
         createBooking: (partnerName) => `/${partnerName}/createBooking_v3`,
         getSlotsByLocation: (partnerName) => `/${partnerName}/getSlotsByLocation`,
+        getZone: (partnerName) => `/${partnerName}/checkServiceabilityByLocation_v2`,
     }
 
 
@@ -141,17 +142,46 @@ class Service {
         return response
     }
 
-    getSlots = async (date) => { //date YYYYMMDD
+    getZone = async (latitude, longitude, zipCode) => {
         const headers = await this.getHeaders();
+        const response = await api({
+            url: this.getURL(this.endPoints.getZone(this.credentials.partnerName)),
+            method: 'POST',
+            data: {
+                "zipcode": zipCode,
+                "lat": latitude,
+                "long": longitude
+            },
+            headers
+        })
+        
+        if (response.code == 200 && response?.status) {
+            return response.data?.zone_id
+        }
+        throw new Error(response?.message)
+    }
+    // {
+    //     "status": true,
+    //     "message": "This Lat Long is serviceable.",
+    //     "data": {
+    //       "zone_id": "86"
+    //     },
+    //     "resCode": "RES0001",
+    //     "code": 200
+    //   }
+
+    getSlots = async (date, latitude, longitude, zipCode) => { //date YYYYMMDD
+        const headers = await this.getHeaders();
+        const zone = await this.getZone(latitude, longitude, zipCode);
 
         const response = await api({
             url: this.getURL(this.endPoints.getSlotsByLocation(this.credentials.partnerName)),
             method: 'POST',
             data: {
                 "slot_date": moment(date, 'YYYYMMDD').format('YYYY-MM-DD'),
-                "zone_id": this.credentials.zone_id,
-                "lat": "28.4595",
-                "long": "77.0266"
+                "zone_id": zone,
+                "lat": latitude,
+                "long": longitude
             },
             headers
         })

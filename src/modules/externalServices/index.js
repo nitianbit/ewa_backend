@@ -17,14 +17,10 @@ class Service {
         }
     }
 
-    getSlots = async (vendor = VENDORS.HEALTHIANS, date) => {
-        try {
-            //TODO fetch slots according to the vendor currently fetching only for single vendor
-            return await heathianService.getSlots(date)
-        } catch (error) {
-            console.log(error);
-            return null
-        }
+    getSlots = async (vendor = VENDORS.HEALTHIANS, date, latitude, longitude, zipCode) => {
+        //TODO fetch slots according to the vendor currently fetching only for single vendor
+        return await heathianService.getSlots(date, latitude, longitude, zipCode)
+
     }
 
     createBooking = async ({
