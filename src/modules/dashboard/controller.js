@@ -98,6 +98,7 @@ export const getDashboardData = async (req, res) => {
 export const patientsByCompany = async (req, res) => {
   try {
     const { company_id } = req.query;
+	  console.log(company_id);
     const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const patientsCompany = await Patient.aggregate([
@@ -135,6 +136,7 @@ export const patientsByCompany = async (req, res) => {
     return sendResponse(res, 200, "Success", dataForPieChart);
   } catch (error) {
     showError(error);
+    console.log(error);
     return sendResponse(res, 500, "Internal server error", error);
   }
 };

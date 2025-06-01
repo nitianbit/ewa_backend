@@ -7,6 +7,7 @@ export const createRequest = async (req, res) => {
     try {
         const module = req.params.module;
         const Model = getModule(module);
+	console.log(Model);
         const response = await Model.create(req.body);
         sendResponse(res, 200, "success", response);
     } catch (error) {
