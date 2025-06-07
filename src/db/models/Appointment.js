@@ -27,8 +27,8 @@ const AppointmentSchema = new mongoose.Schema(
     },
     appointmentDate: { type: Number, required: true },
     timeSlot: {
-      start: { type: Number, required: true },
-      end: { type: Number, required: true },
+      start: { type: String, required: true },
+      end: { type: String, required: true },
     },
     status: {
       type: String,
