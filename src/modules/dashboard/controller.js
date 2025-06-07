@@ -57,7 +57,7 @@ export const getDashboardData = async (req, res) => {
     const thisMonthStart = moment().startOf('month').format('YYYYMMDD');
     const thisMonthEnd = moment().endOf('month').format('YYYYMMDD');
 
-    const matchStage = company_id ? { company: mongoose.Types.ObjectId(company_id) } : {};
+    const matchStage = company_id ? { company: new mongoose.Types.ObjectId(company_id) } : {};
 
     const [
       totalAppointmentsToday,
@@ -98,7 +98,7 @@ export const getDashboardData = async (req, res) => {
 export const patientsByCompany = async (req, res) => {
   try {
     const { company_id } = req.query;
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+    const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const patientsCompany = await Patient.aggregate([
       matchStage,
@@ -143,7 +143,7 @@ export const appointmentsByCompany = async (req, res) => {
   try {
     const { company_id } = req.query;
 
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+    const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const appointments = await Appointment.aggregate([
       matchStage,
@@ -180,6 +180,7 @@ export const appointmentsByCompany = async (req, res) => {
     return sendResponse(res, 200, "Success", dataForPieChart);
   } catch (error) {
     showError(error);
+	  console.log("\nSHUBHAM TEST ",error);
     return sendResponse(res, 500, "Internal server error", error);
   }
 };
@@ -188,7 +189,7 @@ export const patientsByDoctor = async (req, res) => {
   try {
     const { company_id } = req.query;
 
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+    const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const patients = await Patient.aggregate([
       matchStage,
@@ -286,7 +287,7 @@ export const appointmentSummary = async (req, res) => {
 export const patientsByAgeGroup = async (req, res) => {
     try {
         const { company_id } = req.query;
-        const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+        const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
         const patientsByAge = await Patient.aggregate([
             matchStage,
@@ -331,7 +332,7 @@ export const patientsByAgeGroup = async (req, res) => {
 export const patientsByGender = async (req, res) => {
     try {
         const { company_id } = req.query;
-        const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+        const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
         const patientsByGender = await Patient.aggregate([
             matchStage,
