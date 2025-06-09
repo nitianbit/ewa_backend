@@ -8,6 +8,14 @@ export const sendOtp=async(email,otp)=>{
   })
 }
 
+export const sendNotification=async(email,data)=>{
+  return await sendEmail({
+    to:email,
+    textBody:`New Appointment  ${data}`,
+    subject:"EWA Healthcare New Appointment "
+  })
+}
+
 /**
  * Sends an email using SMTP2Go API.
  * @param {string[]} to - Array of recipient email addresses.

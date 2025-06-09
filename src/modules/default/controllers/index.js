@@ -3,6 +3,7 @@ import { sendResponse } from "../../../utils/helper.js";
 import { handleGridRequest } from "../../../utils/request.js";
 import externalServices from "../../externalServices/index.js";
 import { getModule, MODULES } from "../utils/helper.js";
+import { sendNotification } from "../../../utils/email.js";
 
 export const createRequest = async (req, res) => {
     try {
@@ -15,7 +16,29 @@ export const createRequest = async (req, res) => {
                 user: req.user
             })
         }
-        sendResponse(res, 200, "success", response);
+        if (module === MODULES.APPOINTMENT) {
+    const emailNotification = [
+        "shubhamgoyal9090@gmail.com",
+        "healthcaremyewa@gmail.com",
+        "support@myewacare.com"
+    ];
+
+    // Fire-and-forget the async email notification
+    (async () => {
+        try {
+            const { success, message } = await sendNotification(emailNotification, response);
+            console.log("Email status:", message);
+
+            if (!success) {
+                console.warn("Email failed to send, but appointment was created.");
+            }
+        } catch (emailError) {
+            console.error("Error sending notification email:", emailError);
+        }
+    })();
+}
+
+	    sendResponse(res, 200, "success", response);
     } catch (error) {
         console.log(error)
         sendResponse(res, 500, error?.message??"Something went wrong", error);
