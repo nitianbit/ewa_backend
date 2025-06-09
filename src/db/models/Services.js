@@ -14,6 +14,11 @@ const schema = new mongoose.Schema(
             ref: 'Department',
             required: false,
         },
+        company: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "Company",
+              required: false,
+            },
         active: { type: Boolean, default: true },
         type: { type: String }
     }

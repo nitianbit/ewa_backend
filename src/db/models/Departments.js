@@ -10,6 +10,12 @@ const DepartmentSchema = new mongoose.Schema(
         ref: 'Hospital',
         required: false,
       },
+      company: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "Company",
+              required: false,
+            },
+
       image: { type: String },
     }
   );
