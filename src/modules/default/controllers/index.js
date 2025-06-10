@@ -46,19 +46,24 @@ export const createRequest = async (req, res) => {
 }
 
 export const updateRequest = async (req, res) => {
-    try {
-        const module = req.params.module;
-        const Model = getModule(module);
-        const data = await Model.findById(req.body._id);
-        if (!data) {
-            return sendResponse(res, 404, "Record not found");
-        }
-        const response = await Model.findByIdAndUpdate(req.body._id, req.body,{new:true});
-        sendResponse(res, 200, "success", response);
-    } catch (error) {
-        sendResponse(res, 500, "Something went wrong", error);
+  try {
+    const module = req.params.module;
+    const Model = getModule(module);
+
+    const data = await Model.findById(req.body._id);
+    if (!data) {
+      return sendResponse(res, 404, "Record not found");
     }
-}
+
+    Object.assign(data, req.body);  // Merge updates
+    const response = await data.save();  // Triggers pre("save") middleware
+
+    sendResponse(res, 200, "success", response);
+  } catch (error) {
+    sendResponse(res, 500, "Something went wrong", error);
+  }
+};
+
 
 export const deleteRequest = async (req, res) => {
     try {
