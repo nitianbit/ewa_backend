@@ -10,7 +10,7 @@ export const sendOtp=async(email,otp)=>{
 
 function formatTime(timeStr) {
   const hours = parseInt(timeStr.slice(0, 2), 10);
-  const minutes = timeStr.slice(2);
+  const minutes = parseInt(timeStr.slice(2), 10);
   const date = new Date();
   date.setHours(hours, minutes);
   return date.toLocaleTimeString('en-US', {
@@ -19,16 +19,31 @@ function formatTime(timeStr) {
   });
 }
 
+function formatDate(dateStr) {
+  const year = dateStr.slice(0, 4);
+  const month = dateStr.slice(4, 6);
+  const day = dateStr.slice(6, 8);
+  const dateObj = new Date(`${year}-${month}-${day}`);
+  return dateObj.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long', // use '2-digit' for MM format
+    day: 'numeric', // use '2-digit' for DD format
+  });
+}
+
+
+
+
 
 
 export const sendNotification=async(email,data)=>{
-  const TextBody = `📅 *New Appointment Scheduled* 📅
+  const TextBody = `📅 New Appointment Scheduled 📅
 
-👤 *Employee Name:* ${data.patient_name}
-📞 *Contact Number:* ${data.patient_phone}
-🏢 *Company Name:* ${data.company_name}
-🗓️ *Date:* ${data.appointmentDate}
-⏰ *Slot:* ${formatTime(data.timeSlot.start)} - ${formatTime(data.timeSlot.end)}
+👤 Employee Name: ${data.patient_name}
+📞 Contact Number: ${data.patient_phone}
+🏢 Company Name: ${data.company_name}
+🗓️ Date: ${formatDate(data.appointmentDate)}
+⏰ Slot: ${formatTime(data.timeSlot.start)} - ${formatTime(data.timeSlot.end)}
 `;
   return await sendEmail({
     to:email,
