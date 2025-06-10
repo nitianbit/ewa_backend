@@ -61,15 +61,17 @@ const AppointmentSchema = new mongoose.Schema(
     package_image: { type: String }, // Package image
     laboratory_name: { type: String },
     vendor: { type: String },
-    packages:{type:[String]},//for healhians only
-    address:{type:String},
-    zipcode:{type:String},
+    packages: { type: [String] },//for healhians only
+    address: { type: String },
+    zipcode: { type: String },
     location: {
-    latitude: {type :Number},
-    longitude: {type:Number},
-  },
-  city:{type:String},
-}
+      latitude: { type: Number },
+      longitude: { type: Number },
+      patient_name: { type: String },
+      patient_phone: { type: Number },
+    },
+    city: { type: String },
+  }
 );
 
 // Pre-save middleware to populate names and images
@@ -83,7 +85,7 @@ AppointmentSchema.pre("save", async function (next) {
       }
     }
 
-    if ( this.department) {
+    if (this.department) {
       // Populate department_name and department_image
       const department = await mongoose.model("Department").findById(this.department);
       if (department) {
@@ -111,7 +113,7 @@ AppointmentSchema.pre("save", async function (next) {
     else if (this.packages && Array.isArray(this.packages) && this.packages.length > 0) {
       // If Healthians flow: set package_name from packages array
       this.package_name = this.packages[0];
-      this.package_image = 'file/static/files/package/67c4b699377451c0a329df95/1740945050-bfe7736251d61649cc3f01302.png';	    
+      this.package_image = 'file/static/files/package/67c4b699377451c0a329df95/1740945050-bfe7736251d61649cc3f01302.png';
     }
 
     // Populate laboratory_name
@@ -124,7 +126,15 @@ AppointmentSchema.pre("save", async function (next) {
 
 
     if (this.vendor) {
-        this.laboratory_name = this.vendor;
+      this.laboratory_name = this.vendor;
+    }
+
+    if (this.patient) {
+      const patient = await mongoose.model("Patient").findById(this.patient);
+      if (patient) {
+        this.patient_name = patient.name;
+        this.patient_phone = patient.phone;
+      }
     }
 
     next();
