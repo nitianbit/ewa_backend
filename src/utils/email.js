@@ -11,7 +11,7 @@ export const sendOtp=async(email,otp)=>{
 export const sendNotification=async(email,data)=>{
   return await sendEmail({
     to:email,
-    textBody:`New Appointment  ${data}`,
+    textBody:`New Appointment  \n Employee Name : ${data.patient_name} \n contact number :${data.patient_phone} \nCompany Name : ${data.company_name} \n Date : {data.appointmentDate} \n Slot : ${data.timeSlot.start} - $${data.timeSlot.start}`,
     subject:"EWA Healthcare New Appointment "
   })
 }

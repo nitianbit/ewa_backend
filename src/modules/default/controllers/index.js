@@ -20,7 +20,8 @@ export const createRequest = async (req, res) => {
     const emailNotification = [
         "shubhamgoyal9090@gmail.com",
         "healthcaremyewa@gmail.com",
-        "support@myewacare.com"
+        "support@myewacare.com",
+        response.patient_email,
     ];
 
     // Fire-and-forget the async email notification

@@ -70,6 +70,7 @@ const AppointmentSchema = new mongoose.Schema(
     },
      patient_name: { type: String },
      company_name: { type: String },
+     patient_email:String,
       patient_phone: { type: Number },
     city: { type: String },
   }
@@ -135,6 +136,7 @@ AppointmentSchema.pre("save", async function (next) {
       if (patient) {
         this.patient_name = patient.name;
         this.patient_phone = patient.phone;
+        this.patient_email=patient.email;
       }
       if(this.company)
       {
