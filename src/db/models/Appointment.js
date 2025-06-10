@@ -69,6 +69,7 @@ const AppointmentSchema = new mongoose.Schema(
       longitude: { type: Number },
     },
      patient_name: { type: String },
+     company_name: { type: String },
       patient_phone: { type: Number },
     city: { type: String },
   }
@@ -134,6 +135,11 @@ AppointmentSchema.pre("save", async function (next) {
       if (patient) {
         this.patient_name = patient.name;
         this.patient_phone = patient.phone;
+      }
+      if(this.company)
+      {
+        const company = await mongoose.model("Company").findById(this.company);
+        this.company_name=company.name;
       }
     }
 

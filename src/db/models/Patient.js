@@ -3,6 +3,7 @@ import { USER_TYPE } from './Admins.js';
 
 const schema = new mongoose.Schema({
     name: String,
+    surname:String,
     phone: Number,
     age: Number,
     height: {type:Number}, //cm
@@ -24,6 +25,8 @@ const schema = new mongoose.Schema({
         ref: "Company",
         required: true,
     },
+    employId:{type : String},
+    dob:{type : String},
     disabled: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false }
 }, {
