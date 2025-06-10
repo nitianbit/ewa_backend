@@ -67,9 +67,9 @@ const AppointmentSchema = new mongoose.Schema(
     location: {
       latitude: { type: Number },
       longitude: { type: Number },
-      patient_name: { type: String },
-      patient_phone: { type: Number },
     },
+     patient_name: { type: String },
+      patient_phone: { type: Number },
     city: { type: String },
   }
 );
