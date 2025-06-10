@@ -18,7 +18,6 @@ export const createRequest = async (req, res) => {
         }
         if (module === MODULES.APPOINTMENT) {
     const emailNotification = [
-        "shubhamgoyal9090@gmail.com",
         "healthcaremyewa@gmail.com",
         "support@myewacare.com",
         response.patient_email,

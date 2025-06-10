@@ -8,10 +8,31 @@ export const sendOtp=async(email,otp)=>{
   })
 }
 
+function formatTime(timeStr) {
+  const hours = parseInt(timeStr.slice(0, 2), 10);
+  const minutes = timeStr.slice(2);
+  const date = new Date();
+  date.setHours(hours, minutes);
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+
+
 export const sendNotification=async(email,data)=>{
+  const TextBody = `📅 *New Appointment Scheduled* 📅
+
+👤 *Employee Name:* ${data.patient_name}
+📞 *Contact Number:* ${data.patient_phone}
+🏢 *Company Name:* ${data.company_name}
+🗓️ *Date:* ${data.appointmentDate}
+⏰ *Slot:* ${formatTime(data.timeSlot.start)} - ${formatTime(data.timeSlot.end)}
+`;
   return await sendEmail({
     to:email,
-    textBody:`New Appointment  \n Employee Name : ${data.patient_name} \n contact number :${data.patient_phone} \nCompany Name : ${data.company_name} \n Date : {data.appointmentDate} \n Slot : ${data.timeSlot.start} - $${data.timeSlot.start}`,
+    textBody:TextBody,
     subject:"EWA Healthcare New Appointment "
   })
 }
