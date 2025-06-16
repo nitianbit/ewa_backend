@@ -19,21 +19,18 @@ function formatTime(timeStr) {
   });
 }
 
-function formatDate(dateStr) {
-  const year = dateStr.slice(0, 4);
-  const month = dateStr.slice(4, 6);
-  const day = dateStr.slice(6, 8);
+function formatDate(dateNum) {
+  const str = dateNum.toString(); // Convert number like 20250616 to "20250616"
+  const year = str.slice(0, 4);
+  const month = str.slice(4, 6);
+  const day = str.slice(6, 8);
   const dateObj = new Date(`${year}-${month}-${day}`);
   return dateObj.toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long', // use '2-digit' for MM format
-    day: 'numeric', // use '2-digit' for DD format
+    month: 'long',
+    day: 'numeric',
   });
 }
-
-
-
-
 
 
 export const sendNotification=async(email,data)=>{
