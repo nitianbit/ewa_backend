@@ -4,6 +4,7 @@ import { handleGridRequest } from "../../../utils/request.js";
 import externalServices from "../../externalServices/index.js";
 import { getModule, MODULES } from "../utils/helper.js";
 import { sendNotification } from "../../../utils/email.js";
+import { appointmentBookingEmailNotification, scheduleNotificationAppointmentBooking } from "../../appointments/services/index.js";
 
 export const createRequest = async (req, res) => {
     try {
@@ -15,28 +16,30 @@ export const createRequest = async (req, res) => {
                 appointmentData:req.body,
                 user: req.user
             })
+            appointmentBookingEmailNotification(response);
+            scheduleNotificationAppointmentBooking(response);
         }
-        if (module === MODULES.APPOINTMENT) {
-    const emailNotification = [
-        "healthcaremyewa@gmail.com",
-        "support@myewacare.com",
-        response.patient_email,
-    ];
+        // if (module === MODULES.APPOINTMENT) {
+        //     const emailNotification = [
+        //         "healthcaremyewa@gmail.com",
+        //         "support@myewacare.com",
+        //         response.patient_email,
+        //     ];
 
-    // Fire-and-forget the async email notification
-    (async () => {
-        try {
-            const { success, message } = await sendNotification(emailNotification, response);
-            console.log("Email status:", message);
+        //     // Fire-and-forget the async email notification
+        //     (async () => {
+        //         try {
+        //             const { success, message } = await sendNotification(emailNotification, response);
+        //             console.log("Email status:", message);
 
-            if (!success) {
-                console.warn("Email failed to send, but appointment was created.");
-            }
-        } catch (emailError) {
-            console.error("Error sending notification email:", emailError);
-        }
-    })();
-}
+        //             if (!success) {
+        //                 console.warn("Email failed to send, but appointment was created.");
+        //             }
+        //         } catch (emailError) {
+        //             console.error("Error sending notification email:", emailError);
+        //         }
+        //     })();
+        // }
 
 	    sendResponse(res, 200, "success", response);
     } catch (error) {
