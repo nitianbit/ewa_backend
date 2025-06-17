@@ -1,9 +1,9 @@
 import moment from "moment";
-import { Tokens } from "../../../db/models/Tokens";
-import { sendNotification } from "../../../utils/email";
-import { isValidObjectId } from "../../default/utils/helper";
-import { NotificationModel } from "../../../db/models/Notifications";
-import { showError } from "../../../utils/logger";
+import { Tokens } from "../../../db/models/Tokens.js";
+import { sendNotification } from "../../../utils/email.js";
+import { isValidObjectId } from "../../default/utils/helper.js";
+import { NotificationModel } from "../../../db/models/Notifications.js";
+import { showError } from "../../../utils/logger.js";
 
 
 export const appointmentBookingEmailNotification = async (payload) => {
@@ -60,6 +60,18 @@ export const scheduleNotificationAppointmentBooking = async (appointment) => {
             {
                 time: appointmentMoment.clone().subtract(1, 'day'),
                 body: "Your appointment is scheduled for tomorrow."
+            },
+            {
+                time: appointmentMoment.clone().subtract(720, 'minutes'),
+                body: "Your appointment is scheduled for today."
+            },
+            {
+                time: appointmentMoment.clone().subtract(480, 'minutes'),
+                body: "Your appointment is scheduled for today."
+            },
+            {
+                time: appointmentMoment.clone().subtract(60, 'minutes'),
+                body: "You have a appointment in 1 hour."
             },
             {
                 time: appointmentMoment.clone().subtract(15, 'minutes'),
