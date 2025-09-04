@@ -27,8 +27,8 @@ const AppointmentSchema = new mongoose.Schema(
     },
     appointmentDate: { type: Number, required: true },
     timeSlot: {
-      start: { type: Number, required: true },
-      end: { type: Number, required: true },
+      start: { type: String, required: true },
+      end: { type: String, required: true },
     },
     status: {
       type: String,
@@ -61,6 +61,20 @@ const AppointmentSchema = new mongoose.Schema(
     package_image: { type: String }, // Package image
     laboratory_name: { type: String },
     vendor: { type: String },
+<<<<<<< HEAD
+    packages: { type: [String] },//for healhians only
+    address: { type: String },
+    zipcode: { type: String },
+    location: {
+      latitude: { type: Number },
+      longitude: { type: Number },
+    },
+     patient_name: { type: String },
+     company_name: { type: String },
+     patient_email:String,
+      patient_phone: { type: Number },
+    city: { type: String },
+=======
     packages:{type:[String]},
     address:{type:String},
     zipcode:{type:String},
@@ -70,6 +84,7 @@ const AppointmentSchema = new mongoose.Schema(
   },
   city:{type:string},
     //for healhians only
+>>>>>>> 9effa9321019d05c9ed9cb8c07c3b5dfda08ab24
   }
 );
 
@@ -84,7 +99,7 @@ AppointmentSchema.pre("save", async function (next) {
       }
     }
 
-    if ( this.department) {
+    if (this.department) {
       // Populate department_name and department_image
       const department = await mongoose.model("Department").findById(this.department);
       if (department) {
@@ -109,12 +124,36 @@ AppointmentSchema.pre("save", async function (next) {
       this.department_name = undefined;
       this.department_image = undefined;
     }
+    else if (this.packages && Array.isArray(this.packages) && this.packages.length > 0) {
+      // If Healthians flow: set package_name from packages array
+      this.package_name = this.packages[0];
+      this.package_image = 'file/static/files/package/67c4b699377451c0a329df95/1740945050-bfe7736251d61649cc3f01302.png';
+    }
 
     // Populate laboratory_name
     if (this.lab) {
       const lab = await mongoose.model("Laboratory").findById(this.lab);
       if (lab) {
         this.laboratory_name = lab.name;
+      }
+    }
+
+
+    if (this.vendor) {
+      this.laboratory_name = this.vendor;
+    }
+
+    if (this.patient) {
+      const patient = await mongoose.model("Patient").findById(this.patient);
+      if (patient) {
+        this.patient_name = patient.name;
+        this.patient_phone = patient.phone;
+        this.patient_email=patient.email;
+      }
+      if(this.company)
+      {
+        const company = await mongoose.model("Company").findById(this.company);
+        this.company_name=company.name;
       }
     }
 

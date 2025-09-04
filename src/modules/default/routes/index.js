@@ -2,6 +2,7 @@
 import express from 'express'
 import { createRequest, deleteRequest, detailRequest, gridRequest, updateRequest } from '../controllers/index.js';
 import { moduleMiddlewares } from '../utils/helper.js';
+import { verifyToken } from '../../middlewares/index.js';
 const defaultRouter = express.Router();
 
 
@@ -27,7 +28,7 @@ defaultRouter.use('/:module', (req, res, next) => {
 });
 
 //TODO add middlewares and auth check here
-defaultRouter.post('/:module/create', createRequest);
+defaultRouter.post('/:module/create',verifyToken, createRequest);
 defaultRouter.put('/:module/update',   updateRequest);
 defaultRouter.get('/:module/:id/detail',   detailRequest);
 defaultRouter.delete('/:module/:id/delete',  deleteRequest);

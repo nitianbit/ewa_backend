@@ -3,6 +3,7 @@ import csv from 'csv-parser';
 import mongoose from 'mongoose';
 import Patient from '../../../db/models/Patient.js';
 import Doctor from '../../../db/models/Doctors.js';
+import Report from '../../../db/models/Report.js';
 
 class BulkUploadService {
   
@@ -36,7 +37,8 @@ class BulkUploadService {
       transformations = {},
       validationRules = {},
       skipExisting = true,
-      batchSize = 100
+      batchSize = 100,
+      customFieldToFetch
     } = options;
 
     // Validation checks
@@ -54,8 +56,39 @@ class BulkUploadService {
     };
 
     // Parse CSV file
-    const records = await this.parseCSV(filePath);
+    let records = await this.parseCSV(filePath);
     results.total = records.length;
+
+    //fetch custom data
+    if (customFieldToFetch && records?.length) {
+      const {
+        fieldToReplace,
+        model: ModelToReplaceFrom,
+        filter,
+        fieldToUse = '_id',
+        newFieldName,
+        newFieldValueTransformation
+      } = customFieldToFetch;
+
+      const dataToSearch = records?.map(record => record[fieldToReplace]);
+      const query = filter(dataToSearch);
+      const results = await ModelToReplaceFrom.find(query).lean();
+
+      const newFieldsValue = results.reduce((acc, curr) => {
+        acc[curr[fieldToReplace]] = curr[fieldToUse];
+        return acc;
+      }, {})
+
+      records = records.map(record => {
+        const value = record[fieldToReplace];//for report it will be records['email'];
+        const newValue = newFieldsValue[value];
+        delete record[fieldToReplace];
+        return {
+          ...record,
+          [newFieldName]: newFieldValueTransformation ? newFieldValueTransformation(newValue) : newValue,
+        }
+      })
+    }
 
     // Process records in batches
     for (let i = 0; i < records.length; i += batchSize) {
@@ -299,6 +332,40 @@ export const bulkUploadDoctors = async (filePath) => {
         specialization: { required: true, type: 'string' },
         fee: { required: true, type: 'number', min: 0 }
       }
+    });
+
+    console.log('Bulk Upload Results:', result);
+    return result;
+  } catch (error) {
+    console.error('Bulk Upload Error:', error);
+    throw error;
+  }
+};
+
+export const bulkUploadReports = async (filePath) => {
+  try {
+    const result = await BulkUploadService.bulkUpload({
+      model: Report,
+      filePath,
+      uniqueFields: [],
+      transformations: {
+        type: (value) => Number(value)
+      },
+      validationRules: {
+      },
+      customFieldToFetch:{//field to fetch data from the model to use the different fields
+        fieldToReplace: 'email',
+        model: Patient,
+        filter: (emails) => ({
+          "email": {
+            "$in": emails
+          }
+        }),
+        fieldToUse:'_id',
+        newFieldName:'patient',//new field name to add in the records 
+        // newFieldValueTransformation:(value)=>value.toString(), //to transform the new replace value may be _id to string
+      },
+      skipExisting:false //add new record 
     });
 
     console.log('Bulk Upload Results:', result);

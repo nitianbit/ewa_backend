@@ -9,6 +9,47 @@ export const sendOtp=async(email,otp)=>{
   })
 }
 
+function formatTime(timeStr) {
+  const hours = parseInt(timeStr.slice(0, 2), 10);
+  const minutes = parseInt(timeStr.slice(2), 10);
+  const date = new Date();
+  date.setHours(hours, minutes);
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function formatDate(dateNum) {
+  const str = dateNum.toString(); // Convert number like 20250616 to "20250616"
+  const year = str.slice(0, 4);
+  const month = str.slice(4, 6);
+  const day = str.slice(6, 8);
+  const dateObj = new Date(`${year}-${month}-${day}`);
+  return dateObj.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+
+export const sendNotification=async(email,data)=>{
+  const TextBody = `📅 New Appointment Scheduled 📅
+
+👤 Employee Name: ${data.patient_name}
+📞 Contact Number: ${data.patient_phone}
+🏢 Company Name: ${data.company_name}
+🗓️ Date: ${formatDate(data.appointmentDate)}
+⏰ Slot: ${formatTime(data.timeSlot.start)} - ${formatTime(data.timeSlot.end)}
+`;
+  return await sendEmail({
+    to:email,
+    textBody:TextBody,
+    subject:"EWA Healthcare New Appointment "
+  })
+}
+
 /**
  * Sends an email using SMTP2Go API.
  * @param {string[]} to - Array of recipient email addresses.

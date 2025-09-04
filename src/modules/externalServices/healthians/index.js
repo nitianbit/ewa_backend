@@ -20,6 +20,7 @@ class Service {
         getPackages: (partnerName) => `/${partnerName}/getPartnerProducts`,
         createBooking: (partnerName) => `/${partnerName}/createBooking_v3`,
         getSlotsByLocation: (partnerName) => `/${partnerName}/getSlotsByLocation`,
+        getZone: (partnerName) => `/${partnerName}/checkServiceabilityByLocation_v2`,
     }
 
 
@@ -98,7 +99,13 @@ class Service {
     createBooking = async ({
         user,
         packages, //array
+        slot_id,
+        latitude,
+        longitude,
+        city,
+        zipcode
     }) => {
+        const fetchedPackages = await this.getPackages();
         const payload = {
             customer: [
                 {
@@ -111,19 +118,22 @@ class Service {
                 }
             ],
             slot: {
-                slot_id: "123"
+                slot_id
             },
-            package: [{ deal_id: packages }],
+            package: [{
+                deal_id: fetchedPackages?.filter(pack => packages?.includes(pack.test_name))
+                    ?.map(pack => pack?.deal_id)
+            }],
             customer_calling_number: user?.phone,
             billing_cust_name: user?.name,
             gender: getGenderSalutation(user?.gender),
             mobile: user?.phone,
             zone_id: this.credentials.zone_id,
-            latitude: "28.512195944534703",
-            longitude: "77.08483249142313",
+            latitude,
+            longitude,
             address: user?.address,
-            sub_locality: "Gurgaon",
-            zipcode: 122016,
+            sub_locality: city,
+            zipcode:zipcode,
             vendor_billing_user_id: user?._id
         }
         const checksum = this.createChecksum(payload);
@@ -135,23 +145,52 @@ class Service {
             data: payload,
             headers
         })
-        if (response.code == 200) {
+        if ( response?.status) {
             return response
         }
-        return response
+        throw new Error(response?.message)
     }
 
-    getSlots = async (date) => { //date YYYYMMDD
+    getZone = async (latitude, longitude, zipCode) => {
         const headers = await this.getHeaders();
+        const response = await api({
+            url: this.getURL(this.endPoints.getZone(this.credentials.partnerName)),
+            method: 'POST',
+            data: {
+                "zipcode": zipCode,
+                "lat": latitude,
+                "long": longitude
+            },
+            headers
+        })
+        
+        if (response.code == 200 && response?.status) {
+            return response.data?.zone_id
+        }
+        throw new Error(response?.message)
+    }
+    // {
+    //     "status": true,
+    //     "message": "This Lat Long is serviceable.",
+    //     "data": {
+    //       "zone_id": "86"
+    //     },
+    //     "resCode": "RES0001",
+    //     "code": 200
+    //   }
+
+    getSlots = async (date, latitude, longitude, zipCode) => { //date YYYYMMDD
+        const headers = await this.getHeaders();
+        const zone = await this.getZone(latitude, longitude, zipCode);
 
         const response = await api({
             url: this.getURL(this.endPoints.getSlotsByLocation(this.credentials.partnerName)),
             method: 'POST',
             data: {
                 "slot_date": moment(date, 'YYYYMMDD').format('YYYY-MM-DD'),
-                "zone_id": this.credentials.zone_id,
-                "lat": "28.4595",
-                "long": "77.0266"
+                "zone_id": zone,
+                "lat": latitude,
+                "long": longitude
             },
             headers
         })

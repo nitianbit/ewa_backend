@@ -48,16 +48,16 @@ export const getUsers = async (req, res) => {
 
 export const getDashboardData = async (req, res) => {
   try {
-    const { company_id } = req.query;
+    const company_id = req.user.isAdmin ? req.query.company_id : req.user.company;
 
-    const todayStart = moment().startOf('day').toDate();
-    const todayEnd = moment().endOf('day').toDate();
-    const thisWeekStart = moment().startOf('week').toDate();
-    const thisWeekEnd = moment().endOf('week').toDate();
-    const thisMonthStart = moment().startOf('month').toDate();
-    const thisMonthEnd = moment().endOf('month').toDate();
+    const todayStart = moment().startOf('day').format('YYYYMMDD');
+    const todayEnd = moment().endOf('day').format('YYYYMMDD');
+    const thisWeekStart = moment().startOf('week').format('YYYYMMDD');
+    const thisWeekEnd = moment().endOf('week').format('YYYYMMDD');
+    const thisMonthStart = moment().startOf('month').format('YYYYMMDD');
+    const thisMonthEnd = moment().endOf('month').format('YYYYMMDD');
 
-    const matchStage = company_id ? { company: mongoose.Types.ObjectId(company_id) } : {};
+    const matchStage = company_id ? { company: new mongoose.Types.ObjectId(company_id) } : {};
 
     const [
       totalAppointmentsToday,
@@ -97,8 +97,8 @@ export const getDashboardData = async (req, res) => {
 
 export const patientsByCompany = async (req, res) => {
   try {
-    const { company_id } = req.query;
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+    const company_id = req.user.isAdmin ? req.query.company_id : req.user.company;
+    const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const patientsCompany = await Patient.aggregate([
       matchStage,
@@ -141,9 +141,9 @@ export const patientsByCompany = async (req, res) => {
 
 export const appointmentsByCompany = async (req, res) => {
   try {
-    const { company_id } = req.query;
+    const company_id = req.user.isAdmin ? req.query.company_id : req.user.company;
 
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+    const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const appointments = await Appointment.aggregate([
       matchStage,
@@ -186,9 +186,9 @@ export const appointmentsByCompany = async (req, res) => {
 
 export const patientsByDoctor = async (req, res) => {
   try {
-    const { company_id } = req.query;
+    const company_id = req.user.isAdmin ? req.query.company_id : req.user.company;
 
-    const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+    const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
     const patients = await Patient.aggregate([
       matchStage,
@@ -285,8 +285,8 @@ export const appointmentSummary = async (req, res) => {
 // API 1: Patients Count by Age Groups
 export const patientsByAgeGroup = async (req, res) => {
     try {
-        const { company_id } = req.query;
-        const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+        const company_id = req.user.isAdmin ? req.query.company_id : req.user.company;
+        const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
         const patientsByAge = await Patient.aggregate([
             matchStage,
@@ -330,8 +330,8 @@ export const patientsByAgeGroup = async (req, res) => {
 // API 2: Patients Count by Gender
 export const patientsByGender = async (req, res) => {
     try {
-        const { company_id } = req.query;
-        const matchStage = company_id ? { $match: { company: mongoose.Types.ObjectId(company_id) } } : { $match: {} };
+        const company_id = req.user.isAdmin ? req.query.company_id : req.user.company;
+        const matchStage = company_id ? { $match: { company: new mongoose.Types.ObjectId(company_id) } } : { $match: {} };
 
         const patientsByGender = await Patient.aggregate([
             matchStage,

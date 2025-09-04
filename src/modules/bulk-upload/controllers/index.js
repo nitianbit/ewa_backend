@@ -1,12 +1,13 @@
 import { sendResponse } from "../../../utils/helper.js";
+import { showError } from "../../../utils/logger.js";
 import { MODULES } from "../../default/utils/helper.js";
-import { bulkUploadDoctors, bulkUploadPatients } from "../services/bulkUploadService.js";
+import { bulkUploadDoctors, bulkUploadPatients, bulkUploadReports } from "../services/bulkUploadService.js";
 
 
 
 export const bulkUpload = async (req, res) => {
     try {
-        const module = req.params.module;
+        const module = req.params.module || req.body?.module;
         const filePath = req.file?.path;
         let result = null;
         switch (module) {
@@ -15,6 +16,9 @@ export const bulkUpload = async (req, res) => {
                 break;
             case MODULES.DOCTOR:
                 result = await bulkUploadDoctors(filePath);
+                break;
+            case MODULES.REPORT:
+                result = await bulkUploadReports(filePath);
                 break;
             default:
                 result = await bulkUploadPatients(filePath,req.body?.company);

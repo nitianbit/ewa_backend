@@ -17,11 +17,15 @@ import { Banners } from "../../../db/models/Banners.js";
 import HR from "../../../db/models/HR.js"
 import Report from "../../../db/models/Report.js";
 import { ServiceImage } from "../../../db/models/ServiceImage.js";
+import { GalleryImage } from "../../../db/models/GalleryImage.js";
+import { Event } from "../../../db/models/Event.js";
 import Package from "../../../db/models/Packages.js";
 import { NotificationModel } from "../../../db/models/Notifications.js";
 import Form from "../../../db/models/form.js";
 import Blog from "../../../db/models/blog.js";
 import Vendors from "../../../db/models/Vendors.js";
+import Marketing from "../../../db/models/Marketing.js";
+import SuperBlog from "../../../db/models/SuperBlog.js"
 
 export const MODULES = {
     ADMIN: "admin",
@@ -41,11 +45,15 @@ export const MODULES = {
     HR: "hr",
     REPORT: 'report',
     SERVICE_IMAGES: 'service-images',
+    GALLERY_IMAGE: 'gallery-image',
+    EVENT:'event',
     PACKAGES: 'package',
     NOTIFICATION:'notification',
     FORM:'form',
     BLOGS:'blogs',
-    VENDORS:'vendors'
+    VENDORS:'vendors',
+    MARKETING:'marketing',
+    SUPERBLOGS:'superblogs'
 };
 
 export const moduleMiddlewares = {
@@ -108,6 +116,14 @@ export const getModule = (module) => {
             return Blog;
         case MODULES.VENDORS:
             return Vendors;
+        case MODULES.MARKETING:
+            return Marketing;
+        case MODULES.GALLERY_IMAGE:
+            return GalleryImage;
+        case MODULES.EVENT:
+            return Event;    
+        case MODULES.SUPERBLOGS:
+            return SuperBlog;
         default:
             break;
     }
