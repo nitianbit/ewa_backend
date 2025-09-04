@@ -61,7 +61,6 @@ const AppointmentSchema = new mongoose.Schema(
     package_image: { type: String }, // Package image
     laboratory_name: { type: String },
     vendor: { type: String },
-<<<<<<< HEAD
     packages: { type: [String] },//for healhians only
     address: { type: String },
     zipcode: { type: String },
@@ -74,17 +73,15 @@ const AppointmentSchema = new mongoose.Schema(
      patient_email:String,
       patient_phone: { type: Number },
     city: { type: String },
-=======
     packages:{type:[String]},
     address:{type:String},
     zipcode:{type:String},
     location: {
-    latitude: {type :number},
-    longitude: {type:number},
+    latitude: {type :Number},
+    longitude: {type:Number},
   },
-  city:{type:string},
+  city:{type:String},
     //for healhians only
->>>>>>> 9effa9321019d05c9ed9cb8c07c3b5dfda08ab24
   }
 );
 
