@@ -10,4 +10,6 @@ export const CONFIG = {
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     EMAIL: process.env.EMAIL,
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
-}
+    SMTP2GO_API_KEY: process.env.SMTP2GO_API_KEY,
+};
+
