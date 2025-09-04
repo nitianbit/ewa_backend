@@ -17,6 +17,7 @@ const CompanySchema = new mongoose.Schema(
         },
         isActive: { type: Boolean, default: true },
         updatedAt: { type: Number, },
+        codename: { type: String },
     }
 );
 
