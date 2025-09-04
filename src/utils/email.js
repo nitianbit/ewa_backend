@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CONFIG } from "../config/config.js";
 
 export const sendOtp=async(email,otp)=>{
   return await sendEmail({
@@ -69,7 +70,7 @@ export const sendEmail=async ({ to, subject, textBody })=> {
           },
           headers: {
               'Content-Type': 'application/json',
-              'X-Smtp2go-Api-Key': 'api-9C79FEDB46044E7589CDE92367F53FDC',
+              'X-Smtp2go-Api-Key': CONFIG.SMTP2GO_API_KEY,
               'accept': 'application/json'
           }
       })
