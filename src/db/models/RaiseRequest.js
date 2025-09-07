@@ -34,7 +34,7 @@ const raiseRequestSchema = new mongoose.Schema(
     },
     serviceRequired: {
       type: String,
-      enum: ["second_opinion", "surgery", "vaccination"],
+      enum: ["second_opinion", "surgery", "vaccination",'health_card'],
       required: true,
     },
     additionalDetails: {
