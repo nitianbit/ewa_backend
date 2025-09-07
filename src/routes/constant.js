@@ -11,6 +11,7 @@ import formRouter from "../modules/form/routes.js";
 import notificationRouter from "../modules/notifications/routes/index.js";
 import scheduleRouter from "../modules/schedule/routes.js";
 import packagesRouter from "../modules/packages/routes.js";
+import RaiseRequestRouter from "../modules/RaiseRequest/routes.js";
  
 export const routes=[
     {
@@ -44,6 +45,11 @@ export const routes=[
     {
         path: '/api/form',
         router : formRouter,
+        middlewares: []
+    },
+    {
+        path: '/api/RaiseRequest',
+        router : RaiseRequestRouter,
         middlewares: []
     },
     {

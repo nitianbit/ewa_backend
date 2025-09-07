@@ -6,7 +6,8 @@ import { isValidAdmin, verifyToken } from '../middlewares/index.js';
 //RaiseRequestRouter.get("/grid",verifyToken, patientGrid)
 RaiseRequestRouter.get("/grid", RaiseRequestGrid) ;
 RaiseRequestRouter.post("/",handleRaiseRequest);
-RaiseRequestRouter.post("/",verifyToken,isValidAdmin,updateRaiseRequest);
+RaiseRequestRouter.put("/:id", verifyToken, isValidAdmin, updateRaiseRequest);
+
 
 
 export default RaiseRequestRouter;
