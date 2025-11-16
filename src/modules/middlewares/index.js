@@ -14,10 +14,10 @@ export const verifyToken = (req, res, next) => {
         ];
 
         const moduleName = req.params.module; // directly from URL
-
+        const bodyModuleName = req.body.module | ""; // from request body
         console.log("Module:", moduleName); // "corporatePlan"
 
-        if (exemptModules.includes(moduleName)) {
+        if (exemptModules.includes(moduleName) || exemptModules.includes(bodyModuleName)) {
             return next(); // skip verifyToken
         }
 
