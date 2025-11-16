@@ -26,7 +26,10 @@ import Blog from "../../../db/models/blog.js";
 import Vendors from "../../../db/models/Vendors.js";
 import Marketing from "../../../db/models/Marketing.js";
 import SuperBlog from "../../../db/models/SuperBlog.js"
-
+import Surgery from "../../../db/models/Surgery.js";
+import SecondOpinion from "../../../db/models/secondOpinion.js";
+import CorporatePlan from "../../../db/models/corporatePlan.js";
+import EwaPackage from "../../../db/models/ewaPackage.js";
 export const MODULES = {
     ADMIN: "admin",
     SUPERVISOR: "supervisor",
@@ -53,7 +56,11 @@ export const MODULES = {
     BLOGS:'blogs',
     VENDORS:'vendors',
     MARKETING:'marketing',
-    SUPERBLOGS:'superblogs'
+    SUPERBLOGS:'superblogs',
+    SURGERY:'surgery',
+    EWAPACKAGES:'ewa-package',
+    SECONDOPINION:'second-opinion',
+    CORPORATEPLAN:'corporate-plan',
 };
 
 export const moduleMiddlewares = {
@@ -124,6 +131,14 @@ export const getModule = (module) => {
             return Event;    
         case MODULES.SUPERBLOGS:
             return SuperBlog;
+        case MODULES.SURGERY:
+            return Surgery;
+        case MODULES.SECONDOPINION:
+            return SecondOpinion;
+        case MODULES.EWAPACKAGES:
+            return EwaPackage;
+        case MODULES.CORPORATEPLAN:
+            return CorporatePlan;
         default:
             break;
     }

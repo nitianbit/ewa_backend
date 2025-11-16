@@ -1,11 +1,26 @@
 import { USER_TYPE } from "../../db/models/Admins.js";
 import { sendResponse } from "../../utils/helper.js";
 import { decodeToken } from "../auth/middlewares.js";
-
-
+import { getModule, MODULES } from "../default/utils/helper.js";
 
 export const verifyToken = (req, res, next) => {
     try {
+
+        const exemptModules = [
+            MODULES.SURGERY,        // "surgery"
+            MODULES.SECONDOPINION,  // "secondOpinion"
+            MODULES.EWAPACKAGES,    // "ewaPackages"
+            MODULES.CORPORATEPLAN,  // "corporatePlan"
+        ];
+
+        const moduleName = req.params.module; // directly from URL
+
+        console.log("Module:", moduleName); // "corporatePlan"
+
+        if (exemptModules.includes(moduleName)) {
+            return next(); // skip verifyToken
+        }
+
         const token = req.headers['authorization'];
         if (!token) return sendResponse(res, 401, "UnAuthorized.");
         const decodedData = decodeToken(token);
