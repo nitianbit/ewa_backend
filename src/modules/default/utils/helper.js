@@ -131,7 +131,7 @@ export const getModule = (module) => {
             return Event;    
         case MODULES.SUPERBLOGS:
             return SuperBlog;
-        case MODULESS.SURGERY:
+        case MODULES.SURGERY:
             return Surgery;
         case MODULES.SECONDOPINION:
             return SecondOpinion;
